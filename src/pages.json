@@ -32,9 +32,9 @@
       "root": "pages/common",
       "pages": [
         {
-          "path": "login/index",
-          "navigationStyle": "custom"
+          "path": "login/index"
         },
+        { "path": "register/index" },
         {
           "path": "webview/index",
           "navigationBarTitleText": "网页"
@@ -69,9 +69,7 @@
     ]
   },
   "globalStyle": {
-    "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "uni-app",
-    "navigationBarBackgroundColor": "#F8F8F8",
-    "backgroundColor": "#F8F8F8"
+    "navigationStyle": "custom",
+    "navigationBarTextStyle": "black"
   }
 }

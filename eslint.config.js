@@ -3,16 +3,16 @@ const unocss = require('@unocss/eslint-plugin').default
 
 module.exports = antfu(
   {
-    ignores: ['uni_modules'],
+    ignores: ['uni_modules', 'node_modules'],
   },
   {
     files: ['**/*.vue'],
     rules: {
       'vue/block-order': [
-        "error",
+        'error',
         {
-          "order": ["template", "script", "style"]
-        }
+          order: ['template', 'script', 'style'],
+        },
       ],
     },
   },
@@ -21,14 +21,14 @@ module.exports = antfu(
       // 需要尾随逗号
       // "comma-dangle": ["error", "always"]
       // 允许console
-      "no-console": "off",
+      'no-console': 'off',
       // 需要尾随分号
-      "semi": ["error", "always"],
+      semi: ['error', 'always'],
       // 分号位置
-      "style/semi": "off",
+      'style/semi': 'off',
       // 块内的空行
-      "padded-blocks": ["error", "never"]
+      'padded-blocks': ['error', 'never'],
     },
   },
-  unocss,
+  unocss
 )

@@ -1,1 +1,11 @@
 @import 'uview-plus/theme.scss';
+
+$startBackgroundColor: #ff9f49;
+$endBackgroundColor: #ffb36f;
+$inputBackgroundColor: #f0e7df;
+$buttonColor: #ff8d3a;
+$ButtonRadius: 30rpx;
+
+button::after {
+  border: none;
+}

@@ -8,18 +8,29 @@
     />
     <view class="flex justify-center">
       <text class="font-size-36rpx color-gray-700">
-        {{ title }}
+        {{ store.userInfo.user_name || '123' }}
       </text>
+      <button class="u-button" @click="handleClick">登录</button>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from '@/store';
+import { useUserStore } from '@/store'
+import { clearToken } from '@/utils'
 
-const title = ref<string>();
-title.value = import.meta.env.VITE_APP_TITLE;
+const title = ref<string>()
+title.value = import.meta.env.VITE_APP_TITLE
 
-const store = useUserStore();
-console.log('store.user_name', store.user_name);
+const store = useUserStore()
+
+const handleClick = () => {
+  console.log('click button')
+  clearToken()
+  uni.navigateTo({
+    url: '/pages/common/login/index',
+  })
+}
+
+console.log('store.user_name', store.user_name)
 </script>
