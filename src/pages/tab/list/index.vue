@@ -13,13 +13,33 @@
       </u-cell>
     </view>
   </z-paging>
+
+  <u-tabbar
+    :value="tabsStore.currentTab"
+    :fixed="true"
+    :placeholder="true"
+    :safeAreaInsetBottom="true"
+    @change="handleTabChanged"
+  >
+    <template v-for="item in tabsStore.tabsList" :key="item.text">
+      <u-tabbar-item :text="item.text" :icon="item.icon"></u-tabbar-item>
+    </template>
+  </u-tabbar>
 </template>
 
 <script setup lang="ts">
-import zPaging from 'z-paging/components/z-paging/z-paging.vue';
+import zPaging from 'z-paging/components/z-paging/z-paging.vue'
+import { useTabsStore } from '@/store'
 
-const pagingRef = ref<InstanceType<typeof zPaging> | null>(null);
-const dataList = ref<string[]>([]);
+const tabsStore = useTabsStore()
+
+const pagingRef = ref<InstanceType<typeof zPaging> | null>(null)
+const dataList = ref<string[]>([])
+
+const handleTabChanged = (index: number) => {
+  console.log(index)
+  tabsStore.setCurrentTab(index)
+}
 
 const urls: string[] = [
   'https://cdn.uviewui.com/uview/album/1.jpg',
@@ -32,21 +52,21 @@ const urls: string[] = [
   'https://cdn.uviewui.com/uview/album/8.jpg',
   'https://cdn.uviewui.com/uview/album/9.jpg',
   'https://cdn.uviewui.com/uview/album/10.jpg',
-];
+]
 
 function queryList(pageNo: number, pageSize: number) {
-  console.log('[ pageNo ] >', pageNo);
-  console.log('[ pageSize ] >', pageSize);
+  console.log('[ pageNo ] >', pageNo)
+  console.log('[ pageSize ] >', pageSize)
   // 这里的pageNo和pageSize会自动计算好，直接传给服务器即可
   // 这里的请求只是演示，请替换成自己的项目的网络请求，并在网络请求回调中通过pagingRef.value.complete(请求回来的数组)将请求结果传给z-paging
   setTimeout(() => {
     // 1秒之后停止刷新动画
-    const list = [];
+    const list = []
     for (let i = 0; i < 30; i++)
-      list.push(urls[uni.$u.random(0, urls.length - 1)]);
+      list.push(urls[uni.$u.random(0, urls.length - 1)])
 
-    pagingRef.value?.complete(list);
-  }, 1000);
+    pagingRef.value?.complete(list)
+  }, 1000)
   // this.$request
   //   .queryList({ pageNo, pageSize })
   //   .then(res => {

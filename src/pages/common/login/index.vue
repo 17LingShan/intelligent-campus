@@ -62,7 +62,7 @@
         </view>
         <view class="login-button-wrap">
           <view class="login-button-container">
-            <button @click="handleRegisterBtnClicked">登录</button>
+            <button @click="handleLoginBtnClicked">登录</button>
           </view>
         </view>
         <view class="register-button-wrap">
@@ -76,10 +76,17 @@
 </template>
 
 <script setup lang="ts">
+import { setToken } from '@/utils'
+
 const loginFormValues = reactive({
   username: '',
   password: '',
 })
+
+const handleLoginBtnClicked = () => {
+  setToken('1234567890')
+  uni.reLaunch({ url: '/pages/tab/home/index' })
+}
 
 const handleRegisterBtnClicked = () => {
   uni.navigateTo({ url: '/pages/common/register/index' })

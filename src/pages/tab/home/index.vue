@@ -13,11 +13,29 @@
       <button class="u-button" @click="handleClick">登录</button>
     </view>
   </view>
+
+  <u-tabbar
+    :value="tabsStore.currentTab"
+    :fixed="true"
+    :placeholder="true"
+    :safeAreaInsetBottom="true"
+    @change="handleTabChanged"
+  >
+    <template v-for="item in tabsStore.tabsList" :key="item.text">
+      <u-tabbar-item :text="item.text" :icon="item.icon"></u-tabbar-item>
+    </template>
+  </u-tabbar>
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from '@/store'
 import { clearToken } from '@/utils'
+import { useUserStore, useTabsStore } from '@/store'
+
+const tabsStore = useTabsStore()
+
+const handleTabChanged = (index: number) => {
+  tabsStore.setCurrentTab(index)
+}
 
 const title = ref<string>()
 title.value = import.meta.env.VITE_APP_TITLE

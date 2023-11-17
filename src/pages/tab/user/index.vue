@@ -6,12 +6,8 @@
         <u-avatar src="/static/images/logo.png" size="70" />
       </view>
       <view class="flex-1">
-        <view class="pb-20rpx font-size-18rpx">
-          uni-app
-        </view>
-        <view class="u-tips-color font-size-14rpx">
-          微信号:uni-app
-        </view>
+        <view class="pb-20rpx font-size-18rpx"> uni-app </view>
+        <view class="u-tips-color font-size-14rpx"> 微信号:uni-app </view>
       </view>
       <view class="ml-10rpx p-10rpx">
         <u-icon name="scan" color="#969799" />
@@ -42,4 +38,26 @@
       </u-cell-group>
     </view>
   </view>
+
+  <u-tabbar
+    :value="tabsStore.currentTab"
+    :fixed="true"
+    :placeholder="true"
+    :safeAreaInsetBottom="true"
+    @change="handleTabChanged"
+  >
+    <template v-for="item in tabsStore.tabsList" :key="item.text">
+      <u-tabbar-item :text="item.text" :icon="item.icon"></u-tabbar-item>
+    </template>
+  </u-tabbar>
 </template>
+
+<script lang="ts" setup>
+import { useTabsStore } from '@/store'
+
+const tabsStore = useTabsStore()
+
+const handleTabChanged = (index: number) => {
+  tabsStore.setCurrentTab(index)
+}
+</script>
