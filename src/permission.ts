@@ -13,13 +13,7 @@ function checkWhite(url: string) {
 }
 
 // 页面跳转验证拦截器
-const list = [
-  'navigateTo',
-  'redirectTo',
-  'reLaunch',
-  'switchTab',
-  'navigateBack',
-]
+const list = ['navigateTo', 'redirectTo', 'reLaunch', 'switchTab']
 
 list.forEach((item) => {
   uni.addInterceptor(item, {

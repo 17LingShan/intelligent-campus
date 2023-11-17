@@ -30,16 +30,7 @@
   "subPackages": [
     {
       "root": "pages/common",
-      "pages": [
-        {
-          "path": "login/index"
-        },
-        { "path": "register/index" },
-        {
-          "path": "webview/index",
-          "navigationBarTitleText": "网页"
-        }
-      ]
+      "pages": [{ "path": "login/index" }, { "path": "register/index" }]
     }
   ],
   "preloadRule": {
