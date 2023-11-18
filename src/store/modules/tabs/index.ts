@@ -3,11 +3,7 @@ import { defineStore } from 'pinia'
 const useTabsStore = defineStore('tabs', {
   state: (): TabsStore.TabsState => ({
     currentTab: 0,
-    tabsList: [
-      { text: '首页', icon: 'home', path: '/pages/tab/home/index' },
-      { text: '课程表', icon: 'calendar', path: '/pages/tab/list/index' },
-      { text: '我的', icon: 'account', path: '/pages/tab/user/index' },
-    ],
+    tabsList: [],
   }),
 
   getters: {
@@ -17,11 +13,16 @@ const useTabsStore = defineStore('tabs', {
   },
 
   actions: {
-    setCurrentTab(tab: number) {
-      this.currentTab = tab
-      console.log(123)
-      console.log(this.tabsList[tab].path)
-      uni.switchTab({ url: this.tabsList[tab].path })
+    setCurrentTab(index: number) {
+      this.currentTab = index
+      console.log(this.tabsList[index].path)
+      uni.switchTab({ url: this.tabsList[index].path })
+    },
+    setTabsList(tabsList: TabsStore.TabsList) {
+      console.log(tabsList)
+      this.tabsList = tabsList
+      this.currentTab = 0
+      uni.switchTab({ url: this.tabsList[0].path })
     },
   },
 })

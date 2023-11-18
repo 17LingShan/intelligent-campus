@@ -9,22 +9,22 @@
   },
   "pages": [
     {
-      "path": "pages/tab/home/index",
-      "style": {
-        "navigationBarTitleText": "首页"
-      }
+      "path": "pages/manager/manage/index"
     },
     {
-      "path": "pages/tab/list/index",
-      "style": {
-        "navigationBarTitleText": "列表"
-      }
+      "path": "pages/manager/approval/index"
     },
     {
-      "path": "pages/tab/user/index",
-      "style": {
-        "navigationStyle": "custom"
-      }
+      "path": "pages/manager/account/index"
+    },
+    {
+      "path": "pages/student/home/index"
+    },
+    {
+      "path": "pages/student/mine/index"
+    },
+    {
+      "path": "pages/student/calendar/index"
     }
   ],
   "subPackages": [
@@ -37,21 +37,24 @@
     "custom": true,
     "list": [
       {
-        "pagePath": "pages/tab/home/index"
+        "pagePath": "pages/manager/manage/index"
       },
       {
-        "pagePath": "pages/tab/list/index"
+        "pagePath": "pages/manager/approval/index"
       },
       {
-        "pagePath": "pages/tab/user/index"
+        "pagePath": "pages/manager/account/index"
+      },
+      {
+        "pagePath": "pages/student/home/index"
+      },
+      {
+        "pagePath": "pages/student/mine/index"
+      },
+      {
+        "pagePath": "pages/student/calendar/index"
       }
     ]
-  },
-  "preloadRule": {
-    "pages/tab/home/index": {
-      "network": "all",
-      "packages": ["pages/common"]
-    }
   },
   "globalStyle": {
     "navigationStyle": "custom",

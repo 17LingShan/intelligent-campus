@@ -1,17 +1,16 @@
 <template>
-  <view class="flex flex-col items-center justify-center">
-    <image
-      class="mb-50rpx mt-200rpx h-200rpx w-200rpx"
-      src="@/static/images/logo.png"
-    />
-    <view class="flex justify-center">
-      <text class="font-size-36rpx color-gray-700">
-        {{ store.userInfo.user_name || '123' }}
-      </text>
-      <button class="u-button" @click="handleClick">登录</button>
-    </view>
+  <u-navbar
+    :title="tabsStore.tabsList[tabsStore.currentTab].text"
+    bgColor="transparent"
+    height="66rpx"
+    leftIcon=""
+    :autoBack="true"
+  >
+  </u-navbar>
+  <view class="account-wrap">
+    <text>account</text>
+    <button class="u-button" @click="handleClick">登录</button>
   </view>
-
   <u-tabbar
     :value="tabsStore.currentTab"
     :fixed="true"
@@ -24,29 +23,29 @@
     </template>
   </u-tabbar>
 </template>
-
 <script lang="ts" setup>
+import { useTabsStore } from '@/store'
 import { clearToken } from '@/utils'
-import { useUserStore, useTabsStore } from '@/store'
 
 const tabsStore = useTabsStore()
 
 const handleTabChanged = (index: number) => {
+  console.log(index)
   tabsStore.setCurrentTab(index)
 }
-
-const title = ref<string>()
-title.value = import.meta.env.VITE_APP_TITLE
-
-const store = useUserStore()
 
 const handleClick = () => {
   console.log('click button')
   clearToken()
+
   uni.navigateTo({
     url: '/pages/common/login/index',
   })
 }
-
-console.log('store.user_name', store.user_name)
 </script>
+<style lang="scss" scoped>
+.account-wrap {
+  padding-top: $navBarHeight;
+  height: calc(100vh - $navBarHeight);
+}
+</style>

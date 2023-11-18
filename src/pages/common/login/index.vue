@@ -1,40 +1,8 @@
 <template>
-  <!-- <view>
-    <view class="login-form-wrap">
-      <view class="title"> 欢迎登录 </view>
-      <input
-        v-model="tel"
-        class="u-border-bottom"
-        type="number"
-        placeholder="请输入手机号"
-      />
-      <view class="u-border-bottom my-40rpx flex">
-        <input
-          v-model="code"
-          class="flex-1"
-          type="number"
-          placeholder="请输入验证码"
-        />
-        <view>
-          <u-code ref="uCodeRef" @change="codeChange" />
-          <u-button :text="tips" type="success" size="mini" @click="getCode" />
-        </view>
-      </view>
-      <button :style="[inputStyle]" class="login-btn" @tap="submit">
-        登录
-      </button>
-
-      <view class="alternative">
-        <view class="password"> 密码登录 </view>
-        <view class="issue"> 遇到问题 </view>
-      </view>
-    </view>
-  </view> -->
-
+  <u-navbar title="登录" bgColor="transparent" leftIcon="" :autoBack="true">
+  </u-navbar>
   <view class="login-wrap">
     <view class="login-container">
-      <u-navbar title="登录" bgColor="transparent" leftIcon="" :autoBack="true">
-      </u-navbar>
       <view class="login-content-wrap">
         <view class="login-icon-wrap">
           <image
@@ -76,7 +44,10 @@
 </template>
 
 <script setup lang="ts">
-import { setToken } from '@/utils'
+import { getStudentTabs, getManagerTabs, setToken } from '@/utils'
+import { useTabsStore } from '@/store'
+
+const tabsStore = useTabsStore()
 
 const loginFormValues = reactive({
   username: '',
@@ -85,7 +56,14 @@ const loginFormValues = reactive({
 
 const handleLoginBtnClicked = () => {
   setToken('1234567890')
-  uni.reLaunch({ url: '/pages/tab/home/index' })
+  if (loginFormValues.username === '1') {
+    tabsStore.setTabsList(getManagerTabs())
+  } else {
+    tabsStore.setTabsList(getStudentTabs())
+  }
+
+  tabsStore.setCurrentTab(0)
+  uni.reLaunch({ url: tabsStore.tabsList[0].path })
 }
 
 const handleRegisterBtnClicked = () => {
