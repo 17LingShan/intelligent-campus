@@ -26,8 +26,8 @@ function getStudentTabs(): TabsStore.TabsList {
 
 function getManagerTabs(): TabsStore.TabsList {
   return [
-    { text: '管理', icon: 'home', path: '/pages/manager/manage/index' },
-    { text: '审批', icon: 'calendar', path: '/pages/manager/approval/index' },
+    { text: '管理', icon: 'grid', path: '/pages/manager/manage/index' },
+    { text: '审批', icon: 'order', path: '/pages/manager/approval/index' },
     { text: '账号', icon: 'account', path: '/pages/manager/account/index' },
   ]
 }

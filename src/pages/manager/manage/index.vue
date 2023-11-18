@@ -1,14 +1,35 @@
 <template>
   <u-navbar
     :title="tabsStore.tabsList[tabsStore.currentTab].text"
-    bgColor="transparent"
-    height="66rpx"
+    bgColor="#ff9f49"
+    height="88rpx"
     leftIcon=""
     :autoBack="true"
   >
   </u-navbar>
   <view class="manager-wrap">
-    <text>manage</text>
+    <view class="manager-nav-extension-view"></view>
+
+    <view class="manager-content">
+      <view class="manager-button">
+        <view class="avatar-wrap">
+          <u-avatar
+            shape="square"
+            size="60"
+            src="https://cdn.uviewui.com/uview/album/1.jpg"
+            custom-style="margin: -3px 5px -3px 0"
+          />
+        </view>
+        <view class="info-wrap">
+          <text>{{ '桂林电子科技大学' }}</text>
+          <text>{{ '管理员 xxx 47239472' }}</text>
+        </view>
+      </view>
+      <ManageButton name="宿舍管理" icon="home"></ManageButton>
+      <ManageButton name="其他功能" backgroundColor="#32e44f"></ManageButton>
+      <ManageButton name="其他功能" backgroundColor="#bf53e4"></ManageButton>
+      <ManageButton name="其他功能" backgroundColor="#6d9cbf"></ManageButton>
+    </view>
   </view>
   <u-tabbar
     :value="tabsStore.currentTab"
@@ -38,8 +59,47 @@ const handleTabChanged = (index: number) => {
 }
 </script>
 <style lang="scss" scoped>
+$buttonMarginBottom: 2vh;
+$buttonHeight: 140rpx;
+$buttonPaddingHor: 3vh;
+
 .manager-wrap {
-  padding-top: $navBarHeight;
+  padding-top: 100rpx;
   height: calc(100vh - $navBarHeight);
+  .manager-nav-extension-view {
+    height: 6vh;
+    margin-bottom: $buttonMarginBottom;
+    border-radius: 0 0 $ButtonRadius $ButtonRadius;
+    background-color: $startBackgroundColor;
+  }
+  .manager-content {
+    height: 100%;
+    padding: 0 $cardPaddingHor;
+    display: flex;
+    flex-direction: column;
+    gap: $buttonMarginBottom;
+
+    .manager-button {
+      padding: 0 $buttonPaddingHor;
+      height: $buttonHeight;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 3vw;
+      border-radius: $ButtonRadius;
+      background-color: #fdb675;
+      font-size: larger;
+
+      .info-wrap {
+        width: auto;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        font-size: medium;
+      }
+    }
+  }
 }
 </style>
