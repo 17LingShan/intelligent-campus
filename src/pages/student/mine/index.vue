@@ -45,7 +45,7 @@ const handleClick = () => {
 </script>
 <style lang="scss" scoped>
 .mine-wrap {
-  padding-top: $navBarHeight;
+  padding-top: $pagePaddingTop;
   height: calc(100vh - $navBarHeight);
 }
 </style>

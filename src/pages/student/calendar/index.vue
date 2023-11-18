@@ -35,7 +35,7 @@ const handleTabChanged = (index: number) => {
 </script>
 <style lang="scss" scoped>
 .calendar-wrap {
-  padding-top: $navBarHeight;
+  padding-top: $pagePaddingTop;
   height: calc(100vh - $navBarHeight);
 }
 </style>

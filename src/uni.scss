@@ -1,11 +1,12 @@
 @import 'uview-plus/theme.scss';
 
 $navBarHeight: 88rpx;
+$pagePaddingTop: 100rpx;
 $startBackgroundColor: #ff9f49;
 $endBackgroundColor: #ffb36f;
 $inputBackgroundColor: #f0e7df;
 $buttonColor: #ff8d3a;
-$ButtonRadius: 30rpx;
+$buttonRadius: 30rpx;
 $cardPaddingHor: 5vw;
 
 button::after {

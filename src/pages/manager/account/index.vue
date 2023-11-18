@@ -2,7 +2,7 @@
   <u-navbar
     :title="tabsStore.tabsList[tabsStore.currentTab].text"
     bgColor="transparent"
-    height="66rpx"
+    height="88rpx"
     leftIcon=""
     :autoBack="true"
   >
@@ -45,7 +45,7 @@ const handleClick = () => {
 </script>
 <style lang="scss" scoped>
 .account-wrap {
-  padding-top: $navBarHeight;
+  padding-top: $pagePaddingTop;
   height: calc(100vh - $navBarHeight);
 }
 </style>

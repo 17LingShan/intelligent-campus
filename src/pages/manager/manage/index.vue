@@ -25,7 +25,11 @@
           <text>{{ '管理员 xxx 47239472' }}</text>
         </view>
       </view>
-      <ManageButton name="宿舍管理" icon="home"></ManageButton>
+      <ManageButton
+        name="宿舍管理"
+        icon="home"
+        @click="handleClickManageDormitory"
+      ></ManageButton>
       <ManageButton name="其他功能" backgroundColor="#32e44f"></ManageButton>
       <ManageButton name="其他功能" backgroundColor="#bf53e4"></ManageButton>
       <ManageButton name="其他功能" backgroundColor="#6d9cbf"></ManageButton>
@@ -57,6 +61,10 @@ const handleTabChanged = (index: number) => {
   console.log(index)
   tabsStore.setCurrentTab(index)
 }
+
+const handleClickManageDormitory = () => {
+  uni.navigateTo({ url: '/pages/manager/subPages/DormitoryInfo' })
+}
 </script>
 <style lang="scss" scoped>
 $buttonMarginBottom: 2vh;
@@ -64,16 +72,18 @@ $buttonHeight: 140rpx;
 $buttonPaddingHor: 3vh;
 
 .manager-wrap {
-  padding-top: 100rpx;
-  height: calc(100vh - $navBarHeight);
+  padding-top: $pagePaddingTop;
+  height: auto;
   .manager-nav-extension-view {
+    position: fixed;
     height: 6vh;
-    margin-bottom: $buttonMarginBottom;
-    border-radius: 0 0 $ButtonRadius $ButtonRadius;
+    width: 100%;
+    border-radius: 0 0 $buttonRadius $buttonRadius;
     background-color: $startBackgroundColor;
   }
   .manager-content {
     height: 100%;
+    margin-top: calc($buttonMarginBottom + $pagePaddingTop);
     padding: 0 $cardPaddingHor;
     display: flex;
     flex-direction: column;
@@ -87,7 +97,7 @@ $buttonPaddingHor: 3vh;
       align-items: center;
       justify-content: flex-start;
       gap: 3vw;
-      border-radius: $ButtonRadius;
+      border-radius: $buttonRadius;
       background-color: #fdb675;
       font-size: larger;
 

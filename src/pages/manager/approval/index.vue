@@ -2,7 +2,7 @@
   <u-navbar
     :title="tabsStore.tabsList[tabsStore.currentTab].text"
     bgColor="transparent"
-    height="66rpx"
+    height="88rpx"
     leftIcon=""
     :autoBack="true"
   >
@@ -34,7 +34,7 @@ const handleTabChanged = (index: number) => {
 </script>
 <style lang="scss" scoped>
 .approval-wrap {
-  padding-top: $navBarHeight;
+  padding-top: $pagePaddingTop;
   height: calc(100vh - $navBarHeight);
 }
 </style>

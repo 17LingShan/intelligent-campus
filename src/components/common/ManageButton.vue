@@ -2,9 +2,15 @@
   <view
     class="manager-button"
     :style="{ backgroundColor: props.backgroundColor }"
+    @click="$emit('click')"
   >
     <text>{{ props.name }}</text>
-    <u-icon v-if="props.icon" :name="props.icon" size="40"></u-icon>
+    <u-icon
+      v-if="props.icon"
+      size="40"
+      :name="props.icon"
+      :color="'#ffffff'"
+    ></u-icon>
   </view>
 </template>
 
@@ -13,6 +19,10 @@ const props = defineProps<{
   name: string
   icon?: string
   backgroundColor?: string
+}>()
+
+const emit = defineEmits<{
+  (event: 'click'): void
 }>()
 </script>
 
@@ -27,7 +37,7 @@ $buttonPaddingHor: 3vh;
   align-items: center;
   justify-content: space-between;
   height: $buttonHeight;
-  border-radius: $ButtonRadius;
+  border-radius: $buttonRadius;
   background-color: #2b8dd8;
   font-size: larger;
   color: #ffffff;
