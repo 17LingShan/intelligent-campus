@@ -152,7 +152,7 @@ $modalInputHeight: 6vh;
   justify-content: space-between;
   height: $buttonHeight;
   line-height: $buttonHeight;
-  border: 4rpx solid #f2f2f2;
+  border: 4rpx solid $borderOutlineColor;
   border-radius: $buttonRadius;
 
   input {

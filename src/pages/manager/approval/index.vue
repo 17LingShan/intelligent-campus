@@ -12,6 +12,7 @@
       :show="showPicker"
       :columns="columns"
       @cancel="handleCancelPicker"
+      @confirm="handleConfirmPicker"
     ></u-picker>
     <view class="approval-nav-extension-view">
       <view class="select-approval-type-button" @click="handleShowPicker">
@@ -23,6 +24,7 @@
         v-for="item in approvalLists"
         class="approval-item-wrap"
         :key="item.studentId"
+        @click="handleClickApprovalItem(item)"
       >
         <view class="notification-point"></view>
         <text class="approval-item-name ellipsis-text">{{ item.name }}</text>
@@ -66,6 +68,18 @@ const handleShowPicker = () => {
 
 const handleCancelPicker = () => {
   showPicker.value = false
+}
+
+const handleConfirmPicker = (value: any) => {
+  console.log(value.value[0])
+  handleCancelPicker()
+}
+
+const handleClickApprovalItem = (item: { name: string; studentId: string }) => {
+  console.log(item.name, item.studentId)
+  uni.navigateTo({
+    url: `/pages/manager/subPages/ApprovalDetail?name=${item.name}&studentId=${item.studentId}`,
+  })
 }
 
 const handleTabChanged = (index: number) => {
