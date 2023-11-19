@@ -98,7 +98,7 @@ $buttonPaddingHor: 3vh;
 
   .approval-nav-extension-view {
     position: fixed;
-    height: 12vh;
+    height: 10vh;
     width: 100%;
     border-radius: 0 0 $buttonRadius $buttonRadius;
     background-color: $startBackgroundColor;
@@ -126,8 +126,8 @@ $buttonPaddingHor: 3vh;
 
     .approval-item-wrap {
       position: relative;
-      display: flex;
       padding: 0 3vw 0 5vw;
+      display: flex;
       flex-direction: row;
       justify-content: space-between;
       height: $buttonHeight;

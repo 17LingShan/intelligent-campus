@@ -117,7 +117,7 @@ $modalInputHeight: 6vh;
   height: calc(100vh - $navBarHeight);
 
   .dormitory-info-content {
-    height: 100%;
+    overflow: hidden;
     padding: 0 $cardPaddingHor;
     .dormitory-detail-wrap {
       margin-top: 5vh;
