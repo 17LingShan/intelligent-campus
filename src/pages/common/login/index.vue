@@ -55,10 +55,11 @@ const loginFormValues = reactive({
 })
 
 const handleLoginBtnClicked = () => {
-  setToken('1234567890')
   if (loginFormValues.username === '1') {
+    setToken('1')
     tabsStore.setTabsList(getManagerTabs())
   } else {
+    setToken('2')
     tabsStore.setTabsList(getStudentTabs())
   }
 

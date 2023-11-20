@@ -3,8 +3,15 @@ import { getToken, mpUpdate } from '@/utils/index'
 
 onLaunch(() => {
   console.log('App Launch')
-  if (!getToken()) {
+  const token = getToken()
+  if (!token) {
     uni.navigateTo({ url: '/pages/common/login/index' })
+  } else if (token === '1') {
+    uni.navigateTo({ url: '/pages/manager/manage/index' })
+  } else if (token === '2') {
+    uni.navigateTo({ url: '/pages/student/home/index' })
+  } else {
+    uni.navigateTo({ url: '/pages/student/home/index' })
   }
 
   uni.hideHomeButton()
