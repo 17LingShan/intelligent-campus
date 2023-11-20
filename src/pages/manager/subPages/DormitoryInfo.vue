@@ -114,7 +114,7 @@ $modalInputHeight: 6vh;
 
 .dormitory-info-wrap {
   padding-top: $pagePaddingTop;
-  height: calc(100vh - $navBarHeight);
+  height: auto;
 
   .dormitory-info-content {
     overflow: hidden;
