@@ -2,7 +2,7 @@
   <u-navbar
     :title="tabsStore.tabsList[tabsStore.currentTab].text"
     bgColor="transparent"
-    height="66rpx"
+    height="88rpx"
     leftIcon=""
     :autoBack="true"
   >

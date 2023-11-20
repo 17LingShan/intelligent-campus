@@ -8,7 +8,11 @@
   >
   </u-navbar>
   <view class="account-wrap">
-    <view class="account-nav-extension-view"></view>
+    <view class="account-nav-extension-view">
+      <view class="logout-button" @click="handleClickLogout">
+        <text>退出登录</text>
+      </view>
+    </view>
     <view class="account-content">
       <view class="search-button-wrap">
         <input placeholder="请输入学号以查询" />
@@ -44,6 +48,7 @@
 </template>
 <script lang="ts" setup>
 import { useTabsStore } from '@/store'
+import { clearToken } from '@/utils'
 
 const tabsStore = useTabsStore()
 const accountLists = ref([
@@ -61,6 +66,13 @@ const handleClickInfoItem = (item: { name: string; studentId: string }) => {
     url: `/pages/manager/subPages/AccountInfo?name=${item.name}&studentId=${item.studentId}`,
   })
 }
+
+const handleClickLogout = () => {
+  clearToken()
+  uni.navigateTo({
+    url: '/pages/common/login/index',
+  })
+}
 </script>
 <style lang="scss" scoped>
 $buttonHeight: 80rpx;
@@ -74,16 +86,28 @@ $itemTextWidth: 80vw;
 
   .account-nav-extension-view {
     position: fixed;
-    height: 6vh;
+    height: 10vh;
     width: 100%;
     border-radius: 0 0 $buttonRadius $buttonRadius;
     background-color: $startBackgroundColor;
     z-index: 2;
+
+    .logout-button {
+      position: absolute;
+      right: 5vw;
+      bottom: 2vh;
+      width: 18vw;
+      height: 6vh;
+      line-height: 6vh;
+      border-radius: $buttonRadius;
+      background-color: #ffebd8;
+      text-align: center;
+    }
   }
 
   .account-content {
     height: auto;
-    margin-top: $pagePaddingTop;
+    margin-top: calc($pagePaddingTop + 4vh);
     padding: 0 $cardPaddingHor;
     display: flex;
     flex-direction: column;

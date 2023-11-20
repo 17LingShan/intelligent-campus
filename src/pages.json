@@ -39,6 +39,10 @@
         { "path": "ApprovalDetail" },
         { "path": "AccountInfo" }
       ]
+    },
+    {
+      "root": "pages/student/subPages",
+      "pages": [{ "path": "Notification" }]
     }
   ],
   "tabBar": {

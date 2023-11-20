@@ -32,6 +32,16 @@ function getManagerTabs(): TabsStore.TabsList {
   ]
 }
 
+const dayOrder = {
+  一: 1,
+  二: 2,
+  三: 3,
+  四: 4,
+  五: 5,
+  六: 6,
+  日: 7,
+}
+
 export {
   TokenPrefix,
   isLogin,
@@ -40,4 +50,5 @@ export {
   clearToken,
   getStudentTabs,
   getManagerTabs,
+  dayOrder,
 }
