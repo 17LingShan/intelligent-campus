@@ -67,12 +67,6 @@ $buttonPaddingHor: 3vh;
         border-radius: 50%;
       }
 
-      .ellipsis-text {
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-      }
-
       .approval-item-name {
         width: 20%;
       }

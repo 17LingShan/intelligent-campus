@@ -9,7 +9,6 @@
   </u-navbar>
   <view class="manager-wrap">
     <view class="manager-nav-extension-view"></view>
-
     <view class="manager-content">
       <view class="manager-button">
         <view class="avatar-wrap">

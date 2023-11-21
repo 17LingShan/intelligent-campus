@@ -30,20 +30,27 @@
         <view class="dormitory-roommate-item">
           <view class="item-text">
             <text>房间</text>
-            <input v-model="dormitoryDetail.id" placeholder="请输入房间号" />
+            <input
+              v-model="dormitoryDetail.id"
+              :disabled="!isManager"
+              placeholder="请输入房间号"
+            />
           </view>
           <u-icon
             name="search"
             size="36"
-            :color="dormitoryDetail.id ? '#323333' : 'transparent'"
+            :color="dormitoryDetail.id && isManager ? '#323333' : 'transparent'"
           ></u-icon>
         </view>
         <view class="dormitory-roommate-item">
           <view class="item-text">
             <text>余额</text>
-            <text>￥{{ '0.00' }}</text>
+            <text class="item-text-value">￥{{ '0.00' }}</text>
           </view>
-          <u-icon name="search" size="36" :color="'transparent'"></u-icon>
+          <view v-if="!isManager" class="recharge-wrap">
+            <text class="recharge-text">充值</text>
+          </view>
+          <u-icon name="man-delete" size="36" :color="'transparent'"></u-icon>
         </view>
       </view>
       <view class="dormitory-roommate-wrap">
@@ -52,7 +59,7 @@
           <u-icon
             name="man-add"
             size="36"
-            :color="'#323333'"
+            :color="isManager ? '#323333' : 'transparent'"
             @click="handleAddManClicked"
           ></u-icon>
         </view>
@@ -63,18 +70,24 @@
         >
           <view class="item-text">
             <text>{{ item.name }}</text>
-            <text>{{ item.studentId }}</text>
+            <text class="item-text-value">{{ item.studentId }}</text>
           </view>
-          <u-icon name="man-delete" size="36" :color="'#323333'"></u-icon>
+          <u-icon
+            name="man-delete"
+            size="36"
+            :color="isManager ? '#323333' : 'transparent'"
+          ></u-icon>
         </view>
       </view>
     </view>
   </view>
 </template>
 <script lang="ts" setup>
+import { getToken } from '@/utils'
 import { reactive, ref } from 'vue'
 
 const showModal = ref(false)
+const isManager = ref(false)
 
 const addManInfo = reactive({
   name: '',
@@ -91,7 +104,15 @@ const dormitoryDetail = reactive({
   ],
 })
 
+onLoad((option) => {
+  console.log(123)
+  if (getToken() === '1') isManager.value = true
+  const urlParams = option as { id: string }
+  dormitoryDetail.id = urlParams.id || ''
+})
+
 const handleAddManClicked = () => {
+  if (!isManager) return
   showModal.value = true
 }
 
@@ -105,6 +126,7 @@ const handleClickConfirm = () => {
 const handleClickClose = () => {
   showModal.value = false
 }
+// const handleClickRechargeEle = () => {}
 </script>
 <style lang="scss" scoped>
 $buttonHeight: 80rpx;
@@ -161,13 +183,24 @@ $modalInputHeight: 6vh;
   }
 
   .item-text {
+    position: relative;
     width: $itemTextWidth;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-
-    text:last-child {
+    .item-text-value {
       width: $middleItemWidth;
+    }
+  }
+
+  .recharge-wrap {
+    position: absolute;
+    right: 20vw;
+
+    .recharge-text {
+      font-size: small;
+      color: #4687b9;
+      border-bottom: 2rpx solid #4687b9;
     }
   }
 }

@@ -1,17 +1,16 @@
 <script setup lang="ts">
 import { getToken, mpUpdate } from '@/utils/index'
+import { useTabsStore } from '@/store'
+
+const tabsStore = useTabsStore()
 
 onLaunch(() => {
   console.log('App Launch')
   const token = getToken()
   if (!token) {
     uni.navigateTo({ url: '/pages/common/login/index' })
-  } else if (token === '1') {
-    uni.navigateTo({ url: '/pages/manager/manage/index' })
-  } else if (token === '2') {
-    uni.navigateTo({ url: '/pages/student/home/index' })
   } else {
-    uni.navigateTo({ url: '/pages/student/home/index' })
+    tabsStore.setCurrentTab(0)
   }
 
   uni.hideHomeButton()
