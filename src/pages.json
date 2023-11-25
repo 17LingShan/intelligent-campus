@@ -42,7 +42,7 @@
     },
     {
       "root": "pages/student/subPages",
-      "pages": [{ "path": "Notification" }]
+      "pages": [{ "path": "Notification" }, { "path": "Approval" }]
     }
   ],
   "tabBar": {

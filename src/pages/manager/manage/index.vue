@@ -54,6 +54,7 @@ const tabsStore = useTabsStore()
 
 onLoad(() => {
   tabsStore.setTabsList(getManagerTabs())
+  tabsStore.setCurrentTab(0)
 })
 
 const handleTabChanged = (index: number) => {

@@ -96,6 +96,7 @@
           name="离校"
           backgroundColor="#d05bed"
           icon="arrow-right"
+          @click="handleClickApproval"
         />
       </view>
     </view>
@@ -120,6 +121,7 @@ const tabsStore = useTabsStore()
 
 onLoad(() => {
   tabsStore.setTabsList(getStudentTabs())
+  tabsStore.setCurrentTab(0)
 })
 
 const handleTabChanged = (index: number) => {
@@ -141,6 +143,12 @@ const handleClickRechargeCard = () => {}
 const handleClickRoom = () => {
   uni.navigateTo({
     url: '/pages/manager/subPages/DormitoryInfo?id=Y30303',
+  })
+}
+
+const handleClickApproval = () => {
+  uni.navigateTo({
+    url: '/pages/student/subPages/Approval?id=Y30303',
   })
 }
 </script>
