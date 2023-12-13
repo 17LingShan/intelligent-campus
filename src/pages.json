@@ -42,7 +42,12 @@
     },
     {
       "root": "pages/student/subPages",
-      "pages": [{ "path": "Notification" }, { "path": "Approval" }]
+      "pages": [
+        { "path": "Notification" },
+        { "path": "Approval" },
+        { "path": "CardCharge" },
+        { "path": "EleCharge" }
+      ]
     }
   ],
   "tabBar": {
