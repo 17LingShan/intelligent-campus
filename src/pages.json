@@ -45,8 +45,7 @@
       "pages": [
         { "path": "Notification" },
         { "path": "Approval" },
-        { "path": "CardCharge" },
-        { "path": "EleCharge" }
+        { "path": "Charge" }
       ]
     }
   ],

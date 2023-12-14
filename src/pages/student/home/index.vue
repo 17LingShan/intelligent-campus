@@ -103,7 +103,7 @@
   </view>
 
   <u-tabbar
-    :value="tabsStore.currentTab"
+    :value="tabsStore.currentTab || 0"
     :fixed="true"
     :placeholder="true"
     :safeAreaInsetBottom="true"
@@ -138,8 +138,16 @@ const handleClickBell = () => {
   })
 }
 
-const handleClickRechargeEle = () => {}
-const handleClickRechargeCard = () => {}
+const handleClickRechargeEle = () => {
+  uni.navigateTo({
+    url: '/pages/student/subPages/Charge?path=ele&id=Y30303',
+  })
+}
+const handleClickRechargeCard = () => {
+  uni.navigateTo({
+    url: '/pages/student/subPages/Charge?path=card&id=Y30303',
+  })
+}
 const handleClickRoom = () => {
   uni.navigateTo({
     url: '/pages/manager/subPages/DormitoryInfo?id=Y30303',
