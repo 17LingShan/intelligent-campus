@@ -35,7 +35,10 @@
       <view class="card-wrap today-lessons-wrap">
         <text class="card-title">今日课程</text>
         <view class="today-lessons-content">
-          <view class="today-lessons-item">
+          <view class="today-lessons-item" v-for="item of lessons">
+            <text>{{ item. }}</text>
+          </view>
+          <!-- <view class="today-lessons-item">
             <text class="ellipsis-text">计算机网络</text>
             <text class="ellipsis-text">01502</text>
             <text class="ellipsis-text">第一节</text>
@@ -58,7 +61,7 @@
             <text class="ellipsis-text">01502</text>
             <text class="ellipsis-text">第五节</text>
             <text class="ellipsis-text">等国风</text>
-          </view>
+          </view> -->
         </view>
       </view>
       <view class="card-wrap dormitory-wrap">
@@ -116,13 +119,29 @@
 </template>
 <script lang="ts" setup>
 import { useTabsStore } from '@/store'
-import { getStudentTabs } from '@/utils'
+import { getStudentTabs, getToken } from '@/utils'
 const tabsStore = useTabsStore()
 
-onLoad(() => {
+const lessons = ref<AllLessons>([])
+
+onLoad(async () => {
   tabsStore.setTabsList(getStudentTabs())
   tabsStore.setCurrentTab(0)
+  await handleFetchLessons()
 })
+
+const handleFetchLessons = async () => {
+  await uni
+    .request({
+      url: 'http://106.52.223.188:8760/api/campus/lesson',
+      method: 'GET',
+      header: { Authorization: getToken() },
+    })
+    .then((res: any) => {
+      console.log('lessons res', res)
+      console.log(lessons)
+    })
+}
 
 const handleTabChanged = (index: number) => {
   tabsStore.setCurrentTab(index)

@@ -11,7 +11,7 @@ import App from '@/App.vue'
 import setupStore from '@/store'
 
 // 引入请求封装
-import setupRequest from '@/utils/request'
+// import setupRequest from '@/utils/request'
 
 // 权限管理
 import '@/permission'
@@ -23,7 +23,7 @@ export function createApp() {
   // 状态管理
   setupStore(app)
   // 网络请求
-  setupRequest()
+  // setupRequest()
 
   return {
     app,

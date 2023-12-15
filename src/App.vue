@@ -4,7 +4,7 @@ import { useTabsStore } from '@/store'
 
 const tabsStore = useTabsStore()
 
-onLaunch(() => {
+onLoad(() => {
   console.log('App Launch')
   const token = getToken()
   if (!token) {

@@ -58,7 +58,6 @@ onLoad(() => {
 })
 
 const handleTabChanged = (index: number) => {
-  console.log(index)
   tabsStore.setCurrentTab(index)
 }
 

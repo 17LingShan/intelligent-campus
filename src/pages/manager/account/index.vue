@@ -61,7 +61,6 @@ const handleTabChanged = (index: number) => {
 }
 
 const handleClickInfoItem = (item: { name: string; studentId: string }) => {
-  console.log(item.name)
   uni.navigateTo({
     url: `/pages/manager/subPages/AccountInfo?name=${item.name}&studentId=${item.studentId}`,
   })

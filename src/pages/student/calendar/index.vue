@@ -81,7 +81,6 @@ import { useTabsStore } from '@/store'
 const tabsStore = useTabsStore()
 
 const handleTabChanged = (index: number) => {
-  console.log(index)
   tabsStore.setCurrentTab(index)
 }
 

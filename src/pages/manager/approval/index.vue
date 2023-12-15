@@ -71,19 +71,16 @@ const handleCancelPicker = () => {
 }
 
 const handleConfirmPicker = (value: any) => {
-  console.log(value.value[0])
   handleCancelPicker()
 }
 
 const handleClickApprovalItem = (item: { name: string; studentId: string }) => {
-  console.log(item.name, item.studentId)
   uni.navigateTo({
     url: `/pages/manager/subPages/ApprovalDetail?name=${item.name}&studentId=${item.studentId}`,
   })
 }
 
 const handleTabChanged = (index: number) => {
-  console.log(index)
   tabsStore.setCurrentTab(index)
 }
 </script>
@@ -144,7 +141,6 @@ $buttonPaddingHor: 3vh;
         right: -5rpx;
         border-radius: 50%;
       }
-
 
       .approval-item-name {
         width: 15%;

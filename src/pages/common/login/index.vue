@@ -1,6 +1,6 @@
 <template>
-  <u-navbar title="登录" bgColor="transparent" leftIcon="" :autoBack="true">
-  </u-navbar>
+  <u-navbar title="登录" bgColor="transparent" leftIcon="" :autoBack="true" />
+  <u-toast ref="loginToastRef"></u-toast>
   <view class="login-wrap">
     <view class="login-container">
       <view class="login-content-wrap">
@@ -44,27 +44,62 @@
 </template>
 
 <script setup lang="ts">
+import { useUserStore } from '@/store'
+
 import { getStudentTabs, getManagerTabs, setToken } from '@/utils'
 import { useTabsStore } from '@/store'
 
 const tabsStore = useTabsStore()
+const userStore = useUserStore()
 
+const loginToastRef = ref()
 const loginFormValues = reactive({
   username: '',
   password: '',
 })
 
-const handleLoginBtnClicked = () => {
-  if (loginFormValues.username === '1') {
-    setToken('1')
-    tabsStore.setTabsList(getManagerTabs())
-  } else {
-    setToken('2')
-    tabsStore.setTabsList(getStudentTabs())
+const handleLogin = async () => {
+  await uni
+    .request({
+      url: 'http://106.52.223.188:8760/api/authority/anno/login',
+      method: 'POST',
+      data: JSON.stringify({
+        account: loginFormValues.username,
+        password: loginFormValues.password,
+      }),
+    })
+    .then((res: any) => {
+      console.log('res', res.data.data)
+      userStore.setInfo(res.data.data.user)
+      setToken(res.data.data.token.token)
+
+      if (res.data.data.user.workDescribe === '') {
+        tabsStore.setTabsList(getStudentTabs())
+      } else {
+        tabsStore.setTabsList(getManagerTabs())
+      }
+
+      uni.reLaunch({ url: tabsStore.tabsList[0].path })
+      tabsStore.setCurrentTab(0)
+    })
+    .catch(() => {
+      loginToastRef.value.show({
+        type: 'error',
+        message: '账号或密码错误',
+      })
+    })
+}
+
+const handleLoginBtnClicked = async () => {
+  if (!loginFormValues.username || !loginFormValues.password) {
+    loginToastRef.value.show({
+      type: 'error',
+      message: '请输入账户和密码',
+    })
+    return
   }
 
-  tabsStore.setCurrentTab(0)
-  uni.reLaunch({ url: tabsStore.tabsList[0].path })
+  await handleLogin()
 }
 
 const handleRegisterBtnClicked = () => {

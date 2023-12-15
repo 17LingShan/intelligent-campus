@@ -105,7 +105,6 @@ const dormitoryDetail = reactive({
 })
 
 onLoad((option) => {
-  console.log(123)
   if (getToken() === '1') isManager.value = true
   const urlParams = option as { id: string }
   dormitoryDetail.id = urlParams.id || ''

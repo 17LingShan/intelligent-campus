@@ -1,9 +1,18 @@
-export type RoleType = '' | '*' | 'user';
+export type RoleType = '' | '*' | 'user'
 export interface UserState {
-  user_id?: string;
-  user_name?: string;
-  avatar?: string;
-  token?: string;
+  account?: string
+  avatar?: string
+  email?: string
+  id?: string
+  lastLoginTime?: string
+  mobile?: string
+  name?: string
+  orgId?: string
+  sex?: string
+  stationId?: string
+  status?: boolean
+  token?: string
+  workDescribe?: string
 }
 
 export type providerType =
@@ -13,4 +22,4 @@ export type providerType =
   | 'xiaomi'
   | 'apple'
   | 'univerify'
-  | undefined;
+  | undefined
