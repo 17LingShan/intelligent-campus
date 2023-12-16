@@ -35,46 +35,84 @@
       <view class="card-wrap today-lessons-wrap">
         <text class="card-title">今日课程</text>
         <view class="today-lessons-content">
-          <view class="today-lessons-item" v-for="item of lessons">
-            <text>{{ item. }}</text>
-          </view>
-          <!-- <view class="today-lessons-item">
-            <text class="ellipsis-text">计算机网络</text>
-            <text class="ellipsis-text">01502</text>
+          <view
+            class="today-lessons-item"
+            v-if="lessons[new Date().getDay() - 1]?.firstLesson"
+          >
+            <text class="ellipsis-text">{{
+              lessons[new Date().getDay() - 1]?.firstLesson?.name
+            }}</text>
+            <text class="ellipsis-text">{{
+              lessons[new Date().getDay() - 1]?.firstLesson?.position
+            }}</text>
             <text class="ellipsis-text">第一节</text>
             <text class="ellipsis-text">等国风</text>
           </view>
-          <view class="today-lessons-item">
-            <text class="ellipsis-text">高等数学</text>
-            <text class="ellipsis-text">01502</text>
+          <view
+            class="today-lessons-item"
+            v-if="lessons[new Date().getDay() - 1]?.secondLesson"
+          >
+            <text class="ellipsis-text">{{
+              lessons[new Date().getDay() - 1]?.secondLesson?.name
+            }}</text>
+            <text class="ellipsis-text">{{
+              lessons[new Date().getDay() - 1]?.secondLesson?.position
+            }}</text>
             <text class="ellipsis-text">第二节</text>
             <text class="ellipsis-text">等国风</text>
           </view>
-          <view class="today-lessons-item">
-            <text class="ellipsis-text">uml</text>
-            <text class="ellipsis-text">01502</text>
+          <view
+            class="today-lessons-item"
+            v-if="lessons[new Date().getDay() - 1]?.thirdLesson"
+          >
+            <text class="ellipsis-text">{{
+              lessons[new Date().getDay() - 1]?.thirdLesson?.name
+            }}</text>
+            <text class="ellipsis-text">{{
+              lessons[new Date().getDay() - 1]?.thirdLesson?.position
+            }}</text>
+            <text class="ellipsis-text">第三节</text>
+            <text class="ellipsis-text">等国风</text>
+          </view>
+          <view
+            class="today-lessons-item"
+            v-if="lessons[new Date().getDay() - 1]?.fourthLesson"
+          >
+            <text class="ellipsis-text">{{
+              lessons[new Date().getDay() - 1]?.fourthLesson?.name
+            }}</text>
+            <text class="ellipsis-text">{{
+              lessons[new Date().getDay() - 1]?.fourthLesson?.position
+            }}</text>
             <text class="ellipsis-text">第四节</text>
             <text class="ellipsis-text">等国风</text>
           </view>
-          <view class="today-lessons-item">
-            <text class="ellipsis-text">喜欢上课</text>
-            <text class="ellipsis-text">01502</text>
+          <view
+            class="today-lessons-item"
+            v-if="lessons[new Date().getDay() - 1]?.fifthLesson"
+          >
+            <text class="ellipsis-text">{{
+              lessons[new Date().getDay() - 1]?.fifthLesson?.name
+            }}</text>
+            <text class="ellipsis-text">{{
+              lessons[new Date().getDay() - 1]?.fifthLesson?.position
+            }}</text>
             <text class="ellipsis-text">第五节</text>
             <text class="ellipsis-text">等国风</text>
-          </view> -->
+          </view>
         </view>
       </view>
       <view class="card-wrap dormitory-wrap">
-        <text class="card-title my-room" @click="handleClickRoom"
-          >我的房间</text
-        >
+        <text class="card-title my-room" @click="handleClickRoom">
+          我的房间
+        </text>
         <view class="dormitory-info-item">
           <text>房间号: </text>
-          <text>Y30303</text>
+          <text>{{ userStore.dormNumber }}</text>
         </view>
         <view class="dormitory-info-item">
           <text>所在区域: </text>
-          <text>花江宿舍楼F区</text>
+          <text>{{ userStore.dormLocation }}</text>
         </view>
         <view class="dormitory-info-item">
           <text>电费余额: </text>
@@ -118,11 +156,19 @@
   </u-tabbar>
 </template>
 <script lang="ts" setup>
-import { useTabsStore } from '@/store'
-import { getStudentTabs, getToken } from '@/utils'
+import { useTabsStore, useUserStore } from '@/store'
+import { getStudentTabs, getToken, weekDays } from '@/utils'
+
 const tabsStore = useTabsStore()
+const userStore = useUserStore()
 
 const lessons = ref<AllLessons>([])
+
+watch(lessons, () =>
+  lessons.value.sort(
+    (a, b) => weekDays.indexOf(a.day) - weekDays.indexOf(b.day)
+  )
+)
 
 onLoad(async () => {
   tabsStore.setTabsList(getStudentTabs())
@@ -138,8 +184,10 @@ const handleFetchLessons = async () => {
       header: { Authorization: getToken() },
     })
     .then((res: any) => {
-      console.log('lessons res', res)
-      console.log(lessons)
+      lessons.value = [...res.data.data]
+      lessons.value.sort(
+        (a, b) => weekDays.indexOf(a.day) - weekDays.indexOf(b.day)
+      )
     })
 }
 

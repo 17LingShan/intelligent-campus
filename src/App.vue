@@ -1,29 +1,19 @@
 <script setup lang="ts">
-import { getManagerTabs, getStudentTabs, getToken, mpUpdate } from '@/utils'
-import { useTabsStore } from '@/store'
+// import { clearToken } from './utils'
 
-const tabsStore = useTabsStore()
+function handleEnterApp() {
+  // clearToken()
+  uni.navigateTo({ url: '/pages/common/login/index' })
+  uni.hideHomeButton()
+}
 
 onLoad(() => {
   console.log('App Launch')
-  const token = getToken()
-  if (!token) {
-    uni.navigateTo({ url: '/pages/common/login/index' })
-  } else {
-    if (getToken() === '1') {
-      tabsStore.setTabsList(getManagerTabs())
-    } else {
-      tabsStore.setTabsList(getStudentTabs())
-    }
-  }
-
-  uni.hideHomeButton()
-  // #ifdef MP
-  mpUpdate()
-  // #endif
+  handleEnterApp()
 })
 onShow(() => {
   console.log('App Show')
+  handleEnterApp()
 })
 onHide(() => {
   console.log('App Hide')

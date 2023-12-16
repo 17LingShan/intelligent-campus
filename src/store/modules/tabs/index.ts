@@ -18,7 +18,6 @@ const useTabsStore = defineStore('tabs', {
       uni.switchTab({ url: this.tabsList[index].path })
     },
     setTabsList(tabsList: TabsStore.TabsList) {
-      console.log(tabsList)
       this.tabsList = tabsList
       this.currentTab = 0
       uni.switchTab({ url: this.tabsList[0].path })

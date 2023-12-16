@@ -7,12 +7,11 @@ export interface UserState {
   lastLoginTime?: string
   mobile?: string
   name?: string
-  orgId?: string
   sex?: string
-  stationId?: string
-  status?: boolean
-  token?: string
   workDescribe?: string
+  dormNumber?: string
+  dormLocation?: string
+  idCardNumber?: string
 }
 
 export type providerType =

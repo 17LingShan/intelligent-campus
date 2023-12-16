@@ -23,18 +23,18 @@
       <view class="account-info-wrap">
         <view class="account-info-item">
           <text>用户名</text>
-          <text>法外狂徒</text>
+          <text>{{ userStore.name }}</text>
         </view>
         <view class="account-info-item">
           <text>姓名</text>
-          <text>张三</text>
+          <text>{{ userStore.name }}</text>
         </view>
         <view class="account-info-item">
           <text>编号</text>
-          <text>332846284</text>
+          <text>{{ userStore.id }}</text>
         </view>
         <view class="account-info-item">
-          <text>学习</text>
+          <text>学校</text>
           <text>桂林电子科技大学</text>
         </view>
         <view class="account-info-item">
@@ -43,7 +43,7 @@
         </view>
         <view class="account-info-item">
           <text>手机号码</text>
-          <text>13476628916</text>
+          <text>{{ userStore.mobile }}</text>
         </view>
 
         <view class="account-info-item">
@@ -72,9 +72,10 @@
 </template>
 <script lang="ts" setup>
 import { clearToken } from '@/utils'
-import { useTabsStore } from '@/store'
+import { useTabsStore, useUserStore } from '@/store'
 
 const tabsStore = useTabsStore()
+const userStore = useUserStore()
 
 const handleClickLogout = () => {
   clearToken()

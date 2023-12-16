@@ -17,47 +17,47 @@
         <view class="light-lesson-wrap">
           <view
             :class="`lesson-item-wrap ${
-              item.todayLessons.firstLesson ? '' : 'no-'
+              item.firstLesson ? '' : 'no-'
             }has-lesson-item`"
           >
-            <text>{{ item.todayLessons.firstLesson?.name || '' }}</text>
-            <text> {{ item.todayLessons.firstLesson?.position || '' }}</text>
+            <text>{{ item.firstLesson?.name || '' }}</text>
+            <text> {{ item.firstLesson?.position || '' }}</text>
           </view>
           <view
             :class="`lesson-item-wrap ${
-              item.todayLessons.secondLesson ? '' : 'no-'
+              item.secondLesson ? '' : 'no-'
             }has-lesson-item`"
           >
-            <text>{{ item.todayLessons.secondLesson?.name || '' }}</text>
-            <text> {{ item.todayLessons.secondLesson?.position || '' }}</text>
+            <text>{{ item.secondLesson?.name || '' }}</text>
+            <text> {{ item.secondLesson?.position || '' }}</text>
           </view>
         </view>
         <view class="light-lesson-wrap">
           <view
             :class="`lesson-item-wrap ${
-              item.todayLessons.thirdlyLesson ? '' : 'no-'
+              item.thirdLesson ? '' : 'no-'
             }has-lesson-item`"
           >
-            <text>{{ item.todayLessons.thirdlyLesson?.name || '' }}</text>
-            <text> {{ item.todayLessons.thirdlyLesson?.position || '' }}</text>
+            <text>{{ item.thirdLesson?.name || '' }}</text>
+            <text> {{ item.thirdLesson?.position || '' }}</text>
           </view>
           <view
             :class="`lesson-item-wrap ${
-              item.todayLessons.fourthLesson ? '' : 'no-'
+              item.fourthLesson ? '' : 'no-'
             }has-lesson-item`"
           >
-            <text>{{ item.todayLessons.fourthLesson?.name || '' }}</text>
-            <text> {{ item.todayLessons.fourthLesson?.position || '' }}</text>
+            <text>{{ item.fourthLesson?.name || '' }}</text>
+            <text> {{ item.fourthLesson?.position || '' }}</text>
           </view>
         </view>
         <view class="night-lesson-wrap">
           <view
             :class="`lesson-item-wrap ${
-              item.todayLessons.fifthLesson ? '' : 'no-'
+              item.fifthLesson ? '' : 'no-'
             }has-lesson-item`"
           >
-            <text>{{ item.todayLessons.fifthLesson?.name || '' }}</text>
-            <text> {{ item.todayLessons.fifthLesson?.position || '' }}</text>
+            <text>{{ item.fifthLesson?.name || '' }}</text>
+            <text> {{ item.fifthLesson?.position || '' }}</text>
           </view>
         </view>
       </view>
@@ -77,6 +77,7 @@
 </template>
 <script lang="ts" setup>
 import { useTabsStore } from '@/store'
+import { getToken, weekDays } from '@/utils'
 
 const tabsStore = useTabsStore()
 
@@ -84,81 +85,28 @@ const handleTabChanged = (index: number) => {
   tabsStore.setCurrentTab(index)
 }
 
-const lessons = [
-  {
-    day: '一',
-    todayLessons: {
-      fifthLesson: {
-        name: '计算机忘了',
-        position: '17409',
-      },
-    },
-  },
-  {
-    day: '二',
-    todayLessons: {
-      firstLesson: {
-        name: '计算机忘了',
-        position: '17409',
-      },
-    },
-  },
-  {
-    day: '三',
-    todayLessons: {
-      fifthLesson: {
-        name: '计算机忘了',
-        position: '17409',
-      },
-    },
-  },
-  {
-    day: '四',
-    todayLessons: {
-      fourthLesson: {
-        name: '就三件组成原理',
-        position: '17409',
-      },
-      thirdlyLesson: {
-        name: '计算机忘了',
-        position: '17409',
-      },
-    },
-  },
-  {
-    day: '五',
-    todayLessons: {
-      secondLesson: {
-        name: '计算机忘了',
-        position: '17409',
-      },
-    },
-  },
-  {
-    day: '六',
-    todayLessons: {
-      secondLesson: {
-        name: '计算机忘了',
-        position: '17409',
-      },
-    },
-  },
-  {
-    day: '日',
-    todayLessons: {
-      firstLesson: {
-        name: '计算机忘了',
-        position: '17409',
-      },
-      secondLesson: {
-        name: '计算机忘了',
-        position: '17409',
-      },
-    },
-  },
-]
+onLoad(async () => {
+  await handleFetchLessons()
+})
+const lessons = ref<AllLessons>([])
 
-console.log(lessons)
+const handleFetchLessons = async () => {
+  await uni
+    .request({
+      url: 'http://106.52.223.188:8760/api/campus/lesson',
+      method: 'GET',
+      header: { Authorization: getToken() },
+    })
+    .then((res: any) => {
+      lessons.value = [...res.data.data]
+      lessons.value.sort(
+        (a, b) => weekDays.indexOf(a.day) - weekDays.indexOf(b.day)
+      )
+    })
+    .catch((err: any) => {
+      console.log(err)
+    })
+}
 </script>
 <style lang="scss" scoped>
 $dayButtonWidth: 12.6vw;

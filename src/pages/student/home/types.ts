@@ -1,21 +1,20 @@
 type LessonDays = '一' | '二' | '三' | '四' | '五' | '六' | '日'
 
 type LessonItemKey =
-  | 'firstLessons'
-  | 'secondLessons'
-  | 'thirdLessons'
-  | 'fourthLessons'
-  | 'fifthLessons'
-  | 'sixthLessons'
-  | 'seventhLessons'
+  | 'firstLesson'
+  | 'secondLesson'
+  | 'thirdLesson'
+  | 'fourthLesson'
+  | 'fifthLesson'
 
 interface LessonsItemValue {
   name: string
   position: string
 }
 
-interface DayLessonsItem {
+type DayLessonsItem = {
   day: LessonDays
+} & {
   [key in LessonItemKey]?: LessonsItemValue
 }
 

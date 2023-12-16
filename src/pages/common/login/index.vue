@@ -46,7 +46,7 @@
 <script setup lang="ts">
 import { useUserStore } from '@/store'
 
-import { getStudentTabs, getManagerTabs, setToken } from '@/utils'
+import { getStudentTabs, getManagerTabs, setToken, getToken } from '@/utils'
 import { useTabsStore } from '@/store'
 
 const tabsStore = useTabsStore()
@@ -58,6 +58,19 @@ const loginFormValues = reactive({
   password: '',
 })
 
+const handleFetchDormInfo = async () => {
+  await uni
+    .request({
+      url: `http://106.52.223.188:8760/api/campus/stu/${userStore.id}`,
+      method: 'GET',
+      header: { Authorization: getToken() },
+    })
+    .then((res: any) => {
+      userStore.setDormInfo(res.data.data.dormitory)
+    })
+    .catch((err) => {})
+}
+
 const handleLogin = async () => {
   await uni
     .request({
@@ -68,16 +81,17 @@ const handleLogin = async () => {
         password: loginFormValues.password,
       }),
     })
-    .then((res: any) => {
-      console.log('res', res.data.data)
-      userStore.setInfo(res.data.data.user)
+    .then(async (res: any) => {
+      userStore.setBaseInfo(res.data.data.user)
       setToken(res.data.data.token.token)
 
-      if (res.data.data.user.workDescribe === '') {
+      if (res.data.data.role === '学生') {
         tabsStore.setTabsList(getStudentTabs())
       } else {
         tabsStore.setTabsList(getManagerTabs())
       }
+
+      await handleFetchDormInfo()
 
       uni.reLaunch({ url: tabsStore.tabsList[0].path })
       tabsStore.setCurrentTab(0)
