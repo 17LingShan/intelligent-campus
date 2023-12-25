@@ -82,9 +82,8 @@ const handleLogin = async () => {
       }),
     })
     .then(async (res: any) => {
-      userStore.setBaseInfo(res.data.data.user)
+      userStore.setBaseInfo(res.data.data.user, res.data.data.role)
       setToken(res.data.data.token.token)
-
       if (res.data.data.role === '学生') {
         tabsStore.setTabsList(getStudentTabs())
       } else {

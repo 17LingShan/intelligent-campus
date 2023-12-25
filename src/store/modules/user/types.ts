@@ -8,10 +8,13 @@ export interface UserState {
   mobile?: string
   name?: string
   sex?: string
+  role?: string
   workDescribe?: string
+  dormId?: string
   dormNumber?: string
   dormLocation?: string
   idCardNumber?: string
+  number?: string
 }
 
 export type providerType =

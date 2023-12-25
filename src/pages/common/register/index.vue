@@ -1,4 +1,5 @@
 <template>
+  <u-toast ref="registerToastRef"></u-toast>
   <view class="register-wrap">
     <view class="register-container">
       <u-navbar
@@ -13,10 +14,27 @@
             <text>绑定账号</text>
           </view>
           <view class="register-input-wrap">
-            <input class="u-border-bottom" placeholder="学校" />
-            <input class="u-border-bottom" type="number" placeholder="学号" />
-            <input class="u-border-bottom" placeholder="姓名" />
-            <input class="u-border-bottom" placeholder="身份证号" />
+            <input
+              class="u-border-bottom"
+              placeholder="学校"
+              v-model="registerFormValues.school"
+            />
+            <input
+              class="u-border-bottom"
+              type="number"
+              placeholder="学号"
+              v-model="registerFormValues.number"
+            />
+            <input
+              class="u-border-bottom"
+              placeholder="姓名"
+              v-model="registerFormValues.name"
+            />
+            <input
+              class="u-border-bottom"
+              placeholder="身份证号"
+              v-model="registerFormValues.idCardNumber"
+            />
           </view>
         </view>
         <view class="register-info-wrap">
@@ -24,15 +42,27 @@
             <text>设置信息</text>
           </view>
           <view class="register-input-wrap">
-            <input class="u-border-bottom" placeholder="用户名" />
-            <input class="u-border-bottom" placeholder="密码" />
-            <input class="u-border-bottom" type="number" placeholder="手机号" />
+            <input
+              class="u-border-bottom"
+              placeholder="用户名"
+              v-model="registerFormValues.account"
+            />
+            <input
+              class="u-border-bottom"
+              placeholder="密码"
+              v-model="registerFormValues.password"
+            />
+            <input
+              class="u-border-bottom"
+              type="number"
+              placeholder="手机号"
+              v-model="registerFormValues.mobile"
+            />
           </view>
         </view>
-
         <view class="login-button-wrap">
           <view class="login-button-container">
-            <button>注册</button>
+            <button @click="handleRegister">注册</button>
           </view>
         </view>
       </view>
@@ -41,8 +71,65 @@
 </template>
 
 <script setup lang="ts">
+const registerToastRef = ref()
+const registerFormValues = reactive({
+  name: '',
+  school: '',
+  number: '',
+  idCardNumber: '',
+  password: '',
+  account: '',
+  mobile: '',
+})
+
+const handleRegister = async () => {
+  let flag = false
+  Object.keys(toRaw(registerFormValues)).every((item) => {
+    if (item === '' || item === undefined || item === null) {
+      flag = true
+    }
+  })
+
+  if (flag) {
+    registerToastRef.value.show({
+      type: 'error',
+      message: '请完善资料',
+    })
+    return
+  }
+
+  await uni
+    .request({
+      url: 'http://106.52.223.188:8760/api/authority/anno/stu/register',
+      method: 'POST',
+      data: JSON.stringify(registerFormValues),
+    })
+    .then((res: any) => {
+      console.log(res.data)
+      if (res.data.code !== 0) {
+        registerToastRef.value.show({
+          type: 'error',
+          message: res.data.msg || '注册失败!',
+        })
+        return
+      }
+      registerToastRef.value.show({
+        type: 'success',
+        message: '注册成功!',
+      })
+      uni.navigateBack()
+    })
+    .catch((err) => {
+      console.error(err)
+    })
+}
+
 const handleRegisterBack = () => {
   uni.navigateBack()
+  registerToastRef.value.show({
+    type: 'error',
+    message: '注册失败!',
+  })
 }
 </script>
 

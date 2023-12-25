@@ -23,7 +23,6 @@
       </view>
     </view>
   </u-modal>
-
   <view class="dormitory-info-wrap">
     <view class="dormitory-info-content">
       <view class="dormitory-detail-wrap">
@@ -47,7 +46,11 @@
             <text>余额</text>
             <text class="item-text-value">￥{{ '0.00' }}</text>
           </view>
-          <view v-if="!isManager" class="recharge-wrap">
+          <view
+            v-if="!isManager"
+            class="recharge-wrap"
+            @click="handleChargeClicked"
+          >
             <text class="recharge-text">充值</text>
           </view>
           <u-icon name="man-delete" size="36" :color="'transparent'"></u-icon>
@@ -83,8 +86,11 @@
   </view>
 </template>
 <script lang="ts" setup>
+import { useUserStore } from '@/store'
 import { getToken } from '@/utils'
 import { reactive, ref } from 'vue'
+
+const userStore = useUserStore()
 
 const showModal = ref(false)
 const isManager = ref(false)
@@ -94,21 +100,42 @@ const addManInfo = reactive({
   studentId: '',
 })
 
-const dormitoryDetail = reactive({
+const dormitoryDetail = reactive<DormitoryDetailType>({
   id: '',
   surplus: '',
-  roommateList: [
-    { name: '张三', studentId: '32846284' },
-    { name: '李四', studentId: '63276372' },
-    { name: '王五', studentId: '10347277' },
-  ],
+  roommateList: [],
 })
 
-onLoad((option) => {
-  if (getToken() === '1') isManager.value = true
+onLoad(async (option) => {
+  if (userStore.role !== '学生') isManager.value = true
   const urlParams = option as { id: string }
   dormitoryDetail.id = urlParams.id || ''
+
+  if (dormitoryDetail.id) {
+    await handleFetchRoomDetail()
+  }
 })
+
+const handleFetchRoomDetail = async () => {
+  await uni
+    .request({
+      url: `http://106.52.223.188:8760/api/campus/dormitory/${dormitoryDetail.id}`,
+      method: 'GET',
+      header: { Authorization: getToken() },
+    })
+    .then((res: any) => {
+      console.log(res)
+      res.data.data.stuList.forEach((item: any) => {
+        dormitoryDetail.roommateList.push({
+          name: item.name,
+          studentId: item.id,
+        })
+      })
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+}
 
 const handleAddManClicked = () => {
   if (!isManager) return
@@ -122,10 +149,11 @@ const handleClickConfirm = () => {
   handleClickClose()
 }
 
+const handleChargeClicked = () => {}
+
 const handleClickClose = () => {
   showModal.value = false
 }
-// const handleClickRechargeEle = () => {}
 </script>
 <style lang="scss" scoped>
 $buttonHeight: 80rpx;

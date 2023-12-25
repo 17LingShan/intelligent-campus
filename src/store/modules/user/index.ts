@@ -4,24 +4,28 @@ import type { UserState } from './types'
 const useUserStore = defineStore('user', {
   state: (): UserState => ({
     id: '',
+    number: '',
     name: '某某学生',
-    workDescribe: '',
+    role: '',
     mobile: '',
+    dormId: '',
     dormNumber: '',
     dormLocation: '',
     idCardNumber: '',
   }),
   getters: {},
   actions: {
-    setBaseInfo(info: any) {
-      console.log(info.mobile)
+    setBaseInfo(info: any, role: string) {
       this.id = info.id
       this.name = info.name
       this.mobile = info.mobile
-      this.workDescribe = info.workDescribe
+      this.role = role
+    },
+    setNumberInfo(info: any) {
+      this.number = info.number
     },
     setDormInfo(info: any) {
-      console.log('info', info)
+      this.dormId = info.id
       this.dormNumber = info.roomNumber
       this.dormLocation = info.address
     },

@@ -7,7 +7,6 @@
     :autoBack="true"
   >
   </u-navbar>
-
   <view class="home-wrap">
     <view class="account-nav-extension-view">
       <view class="notification-bell" @click="handleClickBell">
@@ -24,7 +23,7 @@
             </view>
             <view class="account-info-detail-wrap">
               <text>桂林电子科技大学</text>
-              <text>张三 32846284</text>
+              <text>{{ `${userStore.name} ${userStore.number || 0}` }}</text>
             </view>
           </view>
           <u-icon name="arrow-right" size="32" @click="handleClickInfoArrow" />
@@ -173,8 +172,24 @@ watch(lessons, () =>
 onLoad(async () => {
   tabsStore.setTabsList(getStudentTabs())
   tabsStore.setCurrentTab(0)
+  await handleFetchInfo()
   await handleFetchLessons()
 })
+
+const handleFetchInfo = async () => {
+  await uni
+    .request({
+      url: `http://106.52.223.188:8760/api/campus/stu/${userStore.id}`,
+      method: 'GET',
+      header: { Authorization: getToken() },
+    })
+    .then((res: any) => {
+      userStore.setNumberInfo({ number: res.data.data.number })
+    })
+    .catch((err: any) => {
+      console.log(err)
+    })
+}
 
 const handleFetchLessons = async () => {
   await uni
@@ -207,23 +222,23 @@ const handleClickBell = () => {
 
 const handleClickRechargeEle = () => {
   uni.navigateTo({
-    url: '/pages/student/subPages/Charge?path=ele&id=Y30303',
+    url: `/pages/student/subPages/Charge?path=ele&id=${userStore.dormId}`,
   })
 }
 const handleClickRechargeCard = () => {
   uni.navigateTo({
-    url: '/pages/student/subPages/Charge?path=card&id=Y30303',
+    url: `/pages/student/subPages/Charge?path=card&id=${userStore.id}&userName=${userStore.name}`,
   })
 }
 const handleClickRoom = () => {
   uni.navigateTo({
-    url: '/pages/manager/subPages/DormitoryInfo?id=Y30303',
+    url: `/pages/manager/subPages/DormitoryInfo?id=${userStore.dormId}`,
   })
 }
 
 const handleClickApproval = () => {
   uni.navigateTo({
-    url: '/pages/student/subPages/Approval?id=Y30303',
+    url: `/pages/student/subPages/Approval?id=${userStore.id}`,
   })
 }
 </script>

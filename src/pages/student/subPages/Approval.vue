@@ -35,7 +35,7 @@
         </view>
         <view class="approval-type-value-wrap">
           <view class="approval-type-value">
-            <text>xxx</text>
+            <text>管理员</text>
           </view>
           <u-icon name="arrow-down" size="24" />
         </view>

@@ -30,7 +30,7 @@
           <text>{{ userStore.name }}</text>
         </view>
         <view class="account-info-item">
-          <text>编号</text>
+          <text>学号</text>
           <text>{{ userStore.id }}</text>
         </view>
         <view class="account-info-item">
@@ -48,7 +48,7 @@
 
         <view class="account-info-item">
           <text>宿舍</text>
-          <text>Y30303</text>
+          <text>{{ userStore.dormNumber ?? '未分配' }}</text>
         </view>
       </view>
       <view class="logout-button-wrap">
