@@ -7,6 +7,8 @@
     :autoBack="true"
   >
   </u-navbar>
+  <u-toast ref="accountToastRef"></u-toast>
+
   <view class="account-wrap">
     <view class="account-nav-extension-view">
       <view class="logout-button" @click="handleClickLogout">
@@ -58,6 +60,7 @@ import { clearToken, getToken } from '@/utils'
 const tabsStore = useTabsStore()
 const accountLists = ref<StuItem[]>([])
 const searchStuNum = ref('')
+const accountToastRef = ref()
 
 onLoad(async () => {
   await handleFetchAllStu()
@@ -93,6 +96,13 @@ const handleFetchStuByStuNum = async () => {
     })
     .then((res: any) => {
       console.log(res.data)
+      if (res.data.code !== 0) {
+        accountToastRef.value.show({
+          type: 'error',
+          message: res.data.msg,
+        })
+        return
+      }
       accountLists.value.splice(0, accountLists.value.length)
       accountLists.value.push({
         name: res.data.data.name,
