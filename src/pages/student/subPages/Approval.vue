@@ -1,6 +1,7 @@
 <template>
   <u-navbar title="申请" bgColor="transparent" height="88rpx" :autoBack="true">
   </u-navbar>
+  <u-toast ref="approvalToastRef"></u-toast>
 
   <view class="approval-wrap">
     <view class="approval-content">
@@ -17,16 +18,34 @@
       </view>
       <view class="approval-access-list-wrap">
         <view class="approval-access-item">
-          <text>退宿</text>
-          <u-icon name="error-circle" size="24" :color="'#f45757'" />
+          <text>四级</text>
+          <u-icon
+            v-if="userStore.cet4"
+            name="checkmark"
+            size="24"
+            :color="'#34dd45'"
+          />
+          <u-icon v-else name="error-circle" size="24" :color="'#f45757'" />
+        </view>
+        <view class="approval-access-item">
+          <text>六级</text>
+          <u-icon
+            v-if="userStore.cet6"
+            name="checkmark"
+            size="24"
+            :color="'#34dd45'"
+          />
+          <u-icon v-else name="error-circle" size="24" :color="'#f45757'" />
         </view>
         <view class="approval-access-item">
           <text>学分</text>
-          <u-icon name="checkmark" size="24" :color="'#34dd45'" />
-        </view>
-        <view class="approval-access-item">
-          <text>四六级</text>
-          <u-icon name="checkmark" size="24" :color="'#34dd45'" />
+          <u-icon
+            v-if="userStore.credit"
+            name="checkmark"
+            size="24"
+            :color="'#34dd45'"
+          />
+          <u-icon v-else name="error-circle" size="24" :color="'#f45757'" />
         </view>
       </view>
       <view class="approval-type-wrap">
@@ -41,14 +60,54 @@
         </view>
       </view>
       <view class="approval-button-wrap">
-        <view class="approval-button-content">
+        <view class="approval-button-content" @click="handleApproval">
           <text>申请</text>
         </view>
       </view>
     </view>
   </view>
 </template>
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { useUserStore } from '@/store'
+import { getToken } from '@/utils'
+
+const userStore = useUserStore()
+
+const approvalToastRef = ref()
+
+const handleApproval = async () => {
+  await uni
+    .request({
+      url: `http://106.52.223.188:8760/api/campus/apply`,
+      method: 'POST',
+      header: { Authorization: getToken() },
+      data: JSON.stringify({
+        stuId: userStore.id,
+        type: '离校',
+        content: '离校',
+      }),
+    })
+    .then((res: any) => {
+      if (res.data.code === 0) {
+        approvalToastRef.value.show({
+          type: 'success',
+          message: '申请成功',
+        })
+        setTimeout(() => {
+          uni.navigateBack()
+        }, 500)
+        return
+      }
+      approvalToastRef.value.show({
+        type: 'error',
+        message: '申请失败, 请联系管理员',
+      })
+    })
+    .catch((err: any) => {
+      console.log(err)
+    })
+}
+</script>
 <style lang="scss" scoped>
 $buttonMarginBottom: 1vh;
 $buttonHeight: 80rpx;

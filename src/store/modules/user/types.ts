@@ -15,6 +15,11 @@ export interface UserState {
   dormLocation?: string
   idCardNumber?: string
   number?: string
+  EleChargeNumber?: string
+  cardChargeNumber?: string
+  cet4?: boolean
+  cet6?: boolean
+  credit?: boolean
 }
 
 export type providerType =

@@ -115,7 +115,7 @@
         </view>
         <view class="dormitory-info-item">
           <text>电费余额: </text>
-          <text>￥0.00</text>
+          <text>￥{{ userStore.EleChargeNumber }}</text>
           <text class="recharge-text" @click="handleClickRechargeEle">
             充值
           </text>
@@ -174,7 +174,23 @@ onLoad(async () => {
   tabsStore.setCurrentTab(0)
   await handleFetchInfo()
   await handleFetchLessons()
+  await handleFetchChargeInfo()
 })
+
+const handleFetchChargeInfo = async () => {
+  await uni
+    .request({
+      url: `http://106.52.223.188:8760/api/campus/stu/${userStore.id}`,
+      method: 'GET',
+      header: { Authorization: getToken() },
+    })
+    .then((res: any) => {
+      userStore.setChargeInfo(res.data.data)
+    })
+    .catch((err: any) => {
+      console.log(err)
+    })
+}
 
 const handleFetchInfo = async () => {
   await uni

@@ -12,6 +12,11 @@ const useUserStore = defineStore('user', {
     dormNumber: '',
     dormLocation: '',
     idCardNumber: '',
+    cardChargeNumber: '',
+    EleChargeNumber: '',
+    cet4: false,
+    cet6: false,
+    credit: false,
   }),
   getters: {},
   actions: {
@@ -23,6 +28,12 @@ const useUserStore = defineStore('user', {
     },
     setNumberInfo(info: any) {
       this.number = info.number
+    },
+    setChargeInfo(info: any) {
+      this.EleChargeNumber = info.dormitory.electricityCost.toString()
+      this.cet4 = info.cet4
+      this.cet6 = info.cet6
+      this.credit = info.credit
     },
     setDormInfo(info: any) {
       this.dormId = info.id

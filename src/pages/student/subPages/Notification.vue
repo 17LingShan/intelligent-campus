@@ -5,22 +5,51 @@
   <view class="notification-wrap">
     <view class="notification-nav-extension-view"></view>
     <view class="notification-content">
-      <view class="notification-item-wrap">
+      <view class="notification-item-wrap" v-for="approvalItem in approvalList">
         <view class="notification-point"></view>
         <text class="approval-item-name ellipsis-text">你的申请: </text>
-        <text class="approval-item-type ellipsis-text">离校</text>
-        <text class="ellipsis-text">{{ '正在等待审批' }}</text>
-      </view>
-      <view class="notification-item-wrap">
-        <view class="notification-point"></view>
-        <text class="approval-item-name ellipsis-text">你的申请: </text>
-        <text class="approval-item-type ellipsis-text">离校</text>
-        <text class="ellipsis-text">{{ '正在等待审批' }}</text>
+        <text class="approval-item-type ellipsis-text">{{
+          approvalItem.type
+        }}</text>
+        <text class="ellipsis-text"> 状态:{{ approvalItem.status }}</text>
       </view>
     </view>
   </view>
 </template>
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { useUserStore } from '@/store'
+import { getToken } from '@/utils'
+const userStore = useUserStore()
+
+onLoad(async () => {
+  await handleFetchApproval()
+})
+
+const approvalList = ref<ApprovalList>([])
+
+const handleFetchApproval = async () => {
+  await uni
+    .request({
+      url: `http://106.52.223.188:8760/api/campus/apply/stu?stuId=${userStore.id}`,
+      method: 'GET',
+      header: { Authorization: getToken() },
+    })
+    .then((res: any) => {
+      if (res.data.code === 0) {
+        res.data.data.forEach((item: any) => {
+          approvalList.value.push({
+            status: item.status,
+            content: item.content,
+            type: item.type,
+          })
+        })
+      }
+    })
+    .catch((err: any) => {
+      console.log(err)
+    })
+}
+</script>
 <style lang="scss" scoped>
 $buttonMarginBottom: 1vh;
 $buttonHeight: 80rpx;
