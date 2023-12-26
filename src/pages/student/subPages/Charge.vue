@@ -88,7 +88,8 @@ const handleCharge = async () => {
       method: 'PUT',
       header: { Authorization: getToken() },
       data: JSON.stringify({
-        [pathName.value === 'card' ? 'userId' : 'id']: dormInfo.id,
+        [pathName.value === 'card' ? 'userId' : 'id']:
+          pathName.value === 'card' ? userStore.id : dormInfo.id,
         money: chargeMoney.value,
       }),
     })

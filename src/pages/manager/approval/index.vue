@@ -50,6 +50,7 @@
 </template>
 <script lang="ts" setup>
 import { useTabsStore } from '@/store'
+import { getToken } from '@/utils'
 
 const tabsStore = useTabsStore()
 
@@ -62,8 +63,26 @@ const approvalLists = ref([
 const showPicker = ref(false)
 const columns = reactive([['全部', '离校申请', '返家申请']])
 
+onLoad(async () => {
+  await handleFetchAllApproval()
+})
+
 const handleShowPicker = () => {
   showPicker.value = true
+}
+
+const handleFetchAllApproval = async () => {
+  await uni
+    .request({
+      url: `http://106.52.223.188:8760/api/campus/apply`,
+      header: { Authorization: getToken() },
+    })
+    .then((res: any) => {
+      console.log(res.data)
+    })
+    .catch((err: any) => {
+      console.log(err)
+    })
 }
 
 const handleCancelPicker = () => {

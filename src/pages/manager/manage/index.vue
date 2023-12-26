@@ -21,7 +21,7 @@
         </view>
         <view class="info-wrap">
           <text>{{ '桂林电子科技大学' }}</text>
-          <text>{{ '管理员 xxx 47239472' }}</text>
+          <text>{{ `${userStore.name}` }}</text>
         </view>
       </view>
       <ManageButton
@@ -47,10 +47,11 @@
   </u-tabbar>
 </template>
 <script lang="ts" setup>
-import { useTabsStore } from '@/store'
+import { useTabsStore, useUserStore } from '@/store'
 import { getManagerTabs } from '@/utils'
 
 const tabsStore = useTabsStore()
+const userStore = useUserStore()
 
 onLoad(() => {
   tabsStore.setTabsList(getManagerTabs())

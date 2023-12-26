@@ -26,14 +26,13 @@ const useUserStore = defineStore('user', {
       this.mobile = info.mobile
       this.role = role
     },
-    setNumberInfo(info: any) {
-      this.number = info.number
-    },
     setChargeInfo(info: any) {
       this.EleChargeNumber = info.dormitory.electricityCost.toString()
+      this.cardChargeNumber = info.balance
       this.cet4 = info.cet4
       this.cet6 = info.cet6
       this.credit = info.credit
+      this.number = info.number
     },
     setDormInfo(info: any) {
       this.dormId = info.id

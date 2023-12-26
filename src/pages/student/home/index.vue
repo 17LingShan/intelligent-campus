@@ -125,7 +125,7 @@
         <text class="card-title">校园卡</text>
         <view class="campus-card-item">
           <text>余额: </text>
-          <text>￥0.00</text>
+          <text>￥{{ userStore.cardChargeNumber }}</text>
           <text class="recharge-text" @click="handleClickRechargeCard">
             充值
           </text>
@@ -172,8 +172,13 @@ watch(lessons, () =>
 onLoad(async () => {
   tabsStore.setTabsList(getStudentTabs())
   tabsStore.setCurrentTab(0)
-  await handleFetchInfo()
   await handleFetchLessons()
+  await handleFetchChargeInfo()
+})
+
+onShow(async () => {
+  tabsStore.setTabsList(getStudentTabs())
+  tabsStore.setCurrentTab(0)
   await handleFetchChargeInfo()
 })
 
@@ -186,21 +191,6 @@ const handleFetchChargeInfo = async () => {
     })
     .then((res: any) => {
       userStore.setChargeInfo(res.data.data)
-    })
-    .catch((err: any) => {
-      console.log(err)
-    })
-}
-
-const handleFetchInfo = async () => {
-  await uni
-    .request({
-      url: `http://106.52.223.188:8760/api/campus/stu/${userStore.id}`,
-      method: 'GET',
-      header: { Authorization: getToken() },
-    })
-    .then((res: any) => {
-      userStore.setNumberInfo({ number: res.data.data.number })
     })
     .catch((err: any) => {
       console.log(err)

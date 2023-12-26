@@ -1,6 +1,7 @@
 <template>
   <u-navbar title="宿舍信息" bgColor="#ff9f49" height="88rpx" :autoBack="true">
   </u-navbar>
+  <u-toast ref="dormToastRef"></u-toast>
 
   <u-modal
     :show="showModal"
@@ -13,8 +14,8 @@
     <view class="modal-slot-content">
       <view class="modal-input-wrap">
         <view class="modal-input-item">
-          <text>姓名</text>
-          <input v-model="addManInfo.name" />
+          <text>房间号</text>
+          <input v-model="addManInfo.dormId" />
         </view>
         <view class="modal-input-item">
           <text>学号</text>
@@ -39,12 +40,17 @@
             name="search"
             size="36"
             :color="dormitoryDetail.id && isManager ? '#323333' : 'transparent'"
+            @click="handleSearchDorm"
           ></u-icon>
         </view>
         <view class="dormitory-roommate-item">
           <view class="item-text">
             <text>余额</text>
-            <text class="item-text-value">￥{{ '0.00' }}</text>
+            <text class="item-text-value">
+              ￥{{
+                userStore.role === '学生' ? userStore.EleChargeNumber : eleCost
+              }}
+            </text>
           </view>
           <view
             v-if="!isManager"
@@ -79,6 +85,7 @@
             name="man-delete"
             size="36"
             :color="isManager ? '#323333' : 'transparent'"
+            @click="handleDeleteMan(item)"
           ></u-icon>
         </view>
       </view>
@@ -94,9 +101,11 @@ const userStore = useUserStore()
 
 const showModal = ref(false)
 const isManager = ref(false)
+const dormToastRef = ref()
+const eleCost = ref(0)
 
 const addManInfo = reactive({
-  name: '',
+  dormId: '',
   studentId: '',
 })
 
@@ -116,6 +125,38 @@ onLoad(async (option) => {
   }
 })
 
+const handleSearchDorm = async () => {
+  await uni
+    .request({
+      url: `http://106.52.223.188:8760/api/campus/dormitory/${dormitoryDetail.id}`,
+      method: 'GET',
+      header: { Authorization: getToken() },
+    })
+    .then((res: any) => {
+      if (res.data.code === 0) {
+        dormitoryDetail.roommateList.splice(
+          0,
+          dormitoryDetail.roommateList.length
+        )
+        eleCost.value = res.data.data.electricityCost
+        res.data.data.stuList.forEach((item: any) => {
+          dormitoryDetail.roommateList.push({
+            name: item.name,
+            studentId: item.id,
+          })
+        })
+        return
+      }
+      dormToastRef.value.show({
+        type: 'error',
+        message: '房间id不存在  ',
+      })
+    })
+    .catch((err: any) => {
+      console.log(err)
+    })
+}
+
 const handleFetchRoomDetail = async () => {
   await uni
     .request({
@@ -124,7 +165,10 @@ const handleFetchRoomDetail = async () => {
       header: { Authorization: getToken() },
     })
     .then((res: any) => {
-      console.log(res)
+      dormitoryDetail.roommateList.splice(
+        0,
+        dormitoryDetail.roommateList.length
+      )
       res.data.data.stuList.forEach((item: any) => {
         dormitoryDetail.roommateList.push({
           name: item.name,
@@ -141,15 +185,63 @@ const handleAddManClicked = () => {
   if (!isManager) return
   showModal.value = true
 }
+const handleClickConfirm = async () => {
+  await uni
+    .request({
+      url: `http://106.52.223.188:8760/api/campus/dormitory/bind`,
+      method: 'PUT',
+      header: { Authorization: getToken() },
+      data: JSON.stringify({
+        stuNum: addManInfo.studentId,
+        dormitoryId: addManInfo.dormId,
+      }),
+    })
+    .then((res: any) => {
+      if (res.data.code !== 0) {
+        dormToastRef.value.show({
+          type: 'error',
+          message: res.data.msg,
+        })
+        return
+      }
+      dormToastRef.value.show({
+        type: 'success',
+        message: '绑定成功',
+      })
+    })
+    .catch((err: any) => {
+      console.log(err)
+    })
 
-const handleClickConfirm = () => {
-  console.log(addManInfo)
-  addManInfo.name = ''
-  addManInfo.studentId = ''
   handleClickClose()
 }
+const handleDeleteMan = async (item: any) => {
+  console.log('delete', item.studentId)
+  await uni
+    .request({
+      url: `http://106.52.223.188:8760/api/campus/dormitory/unbind?stuId=${item.studentId}`,
+      method: 'PUT',
+      header: { Authorization: getToken() },
+    })
+    .then((res: any) => {
+      if (res.data.code === 0) {
+        dormToastRef.value.show({
+          type: 'success',
+          message: '删除成功',
+        })
+        handleFetchRoomDetail()
+      }
+    })
+    .catch((err: any) => {
+      console.log(err)
+    })
+}
 
-const handleChargeClicked = () => {}
+const handleChargeClicked = () => {
+  uni.navigateTo({
+    url: `/pages/student/subPages/Charge?path=ele&id=${userStore.dormId}`,
+  })
+}
 
 const handleClickClose = () => {
   showModal.value = false
