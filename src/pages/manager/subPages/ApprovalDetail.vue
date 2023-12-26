@@ -1,25 +1,38 @@
 <template>
   <u-navbar title="申请详情" bgColor="#ff9f49" height="88rpx" :autoBack="true">
   </u-navbar>
+  <u-toast ref="approvalToastRef"></u-toast>
 
   <view class="approval-detail-wrap">
     <view class="approval-detail-content">
       <view class="approval-type-wrap">
         <text>申请类型</text>
-        <text>离校</text>
+        <text>{{ params.type }}</text>
       </view>
       <view class="approval-data-wrap">
         <view class="approval-valid-item">
-          <text>退宿</text>
-          <u-icon name="checkmark" size="32" :color="'#07c160'"></u-icon>
+          <text>cet4</text>
+          <u-icon
+            v-if="params.cet4"
+            name="checkmark"
+            size="32"
+            :color="'#07c160'"
+          ></u-icon>
+          <u-icon v-else name="error-circle" size="24" :color="'#f45757'" />
+        </view>
+        <view class="approval-valid-item">
+          <text>cet6</text>
+          <u-icon
+            v-if="params.cet6"
+            name="checkmark"
+            size="32"
+            :color="'#07c160'"
+          ></u-icon>
+          <u-icon v-else name="error-circle" size="24" :color="'#f45757'" />
         </view>
         <view class="approval-valid-item">
           <text>退宿</text>
-          <u-icon name="checkmark" size="32" :color="'#07c160'"></u-icon>
-        </view>
-        <view class="approval-valid-item">
-          <text>退宿</text>
-          <u-icon name="checkmark" size="32" :color="'#07c160'"></u-icon>
+          <u-icon name="error-circle" size="24" :color="'#f45757'" />
         </view>
       </view>
       <view class="valid-button-wrap">
@@ -30,22 +43,63 @@
   </view>
 </template>
 <script lang="ts" setup>
+import { getToken } from '@/utils'
+
+const params = reactive<ManageApprovalItem>({
+  cet4: false,
+  cet6: false,
+  name: '',
+  id: '',
+  status: '',
+  stuId: '',
+  type: '',
+})
+
+const approvalToastRef = ref()
+
 onLoad((option: AnyObject | undefined) => {
-  const data = option as { name: string; studentId: string }
-  console.log(data.name)
+  const data = option as ManageApprovalItem
+  params.cet4 = data.cet4
+  params.cet6 = data.cet6
+  params.name = data.name
+  params.id = data.id
+  params.status = data.status
+  params.stuId = data.stuId
+  params.type = data.type
 })
 
 const handleClickAccess = () => {
-  console.log('reject')
-  handleFinishApproval()
+  handleFinishApproval(true)
 }
 const handleClickReject = () => {
-  console.log('access')
-  handleFinishApproval()
+  handleFinishApproval(false)
 }
 
-const handleFinishApproval = () => {
-  uni.navigateBack()
+const handleFinishApproval = async (access: boolean) => {
+  await uni
+    .request({
+      url: 'http://106.52.223.188:8760/api/campus/apply',
+      method: 'PUT',
+      header: { Authorization: getToken() },
+      data: JSON.stringify({
+        applyId: +params.id,
+        status: access ? '通过' : '拒绝',
+      }),
+    })
+    .then((res: any) => {
+      if (res.data.code === 0) {
+        approvalToastRef.value.show({
+          type: 'success',
+          message: '操作成功',
+        })
+        setTimeout(() => {
+          uni.navigateBack()
+        }, 500)
+      }
+    })
+    .catch((err: any) => {
+      console.log(err)
+    })
 }
 </script>
 <style lang="scss" scoped>

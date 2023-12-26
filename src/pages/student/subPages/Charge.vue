@@ -69,7 +69,6 @@ onLoad((option) => {
     id: string
     userName?: string
   }
-  console.log(urlParams)
   dormInfo.id = urlParams.id
   userName.value = urlParams.userName || ''
   pathName.value = urlParams.path
@@ -94,7 +93,6 @@ const handleCharge = async () => {
       }),
     })
     .then((res: any) => {
-      console.log(res.data)
       if (res.data.code === 0) {
         chargeToastRef.value.show({
           type: 'success',

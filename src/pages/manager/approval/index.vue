@@ -21,16 +21,16 @@
     </view>
     <view class="approval-content">
       <view
-        v-for="item in approvalLists"
+        v-for="item in approvalList"
         class="approval-item-wrap"
-        :key="item.studentId"
+        :key="item.id"
         @click="handleClickApprovalItem(item)"
       >
         <view class="notification-point"></view>
         <text class="approval-item-name ellipsis-text">{{ item.name }}</text>
-        <text class="approval-item-id ellipsis-text">{{ item.studentId }}</text>
+        <text class="approval-item-id ellipsis-text">{{ item.stuId }}</text>
         <text class="approval-item-detail ellipsis-text">{{
-          '“离校申请”正在等待审批'
+          `${item.type}${item.status}`
         }}</text>
         <u-icon name="arrow-right" size="24"></u-icon>
       </view>
@@ -54,16 +54,16 @@ import { getToken } from '@/utils'
 
 const tabsStore = useTabsStore()
 
-const approvalLists = ref([
-  { name: '这是啥', studentId: '32846284' },
-  { name: '李四', studentId: '63276372' },
-  { name: '王七', studentId: '10347278' },
-])
+const approvalList = ref<ManageApprovalItem[]>([])
 
 const showPicker = ref(false)
 const columns = reactive([['全部', '离校申请', '返家申请']])
 
 onLoad(async () => {
+  await handleFetchAllApproval()
+})
+
+onShow(async () => {
   await handleFetchAllApproval()
 })
 
@@ -75,10 +75,24 @@ const handleFetchAllApproval = async () => {
   await uni
     .request({
       url: `http://106.52.223.188:8760/api/campus/apply`,
+      method: 'GET',
       header: { Authorization: getToken() },
     })
     .then((res: any) => {
-      console.log(res.data)
+      if (res.data.code === 0) {
+        approvalList.value.splice(0, approvalList.value.length)
+        res.data.data.forEach((item: any) => {
+          approvalList.value.push({
+            id: item.id,
+            status: item.status,
+            stuId: item.stu.id,
+            cet4: item.stu.cet4,
+            cet6: item.stu.cet6,
+            type: item.type,
+            name: item.stu.account,
+          })
+        })
+      }
     })
     .catch((err: any) => {
       console.log(err)
@@ -93,9 +107,9 @@ const handleConfirmPicker = (value: any) => {
   handleCancelPicker()
 }
 
-const handleClickApprovalItem = (item: { name: string; studentId: string }) => {
+const handleClickApprovalItem = (item: ManageApprovalItem) => {
   uni.navigateTo({
-    url: `/pages/manager/subPages/ApprovalDetail?name=${item.name}&studentId=${item.studentId}`,
+    url: `/pages/manager/subPages/ApprovalDetail?name=${item.name}&studentId=${item.stuId}&id=${item.id}&cet4=${item.cet4}&cet6=${item.cet6}&status=${item.status}&type=${item.type}`,
   })
 }
 

@@ -31,7 +31,7 @@
         </view>
         <view class="account-info-item">
           <text>学号</text>
-          <text>{{ userStore.id }}</text>
+          <text>{{ userStore.number }}</text>
         </view>
         <view class="account-info-item">
           <text>学校</text>

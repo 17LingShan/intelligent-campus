@@ -18,18 +18,18 @@
       <view class="account-info-wrap">
         <view class="account-info-item">
           <text>用户名</text>
-          <text>法外狂徒</text>
+          <text>{{ accountInfo.account }}</text>
         </view>
         <view class="account-info-item">
           <text>姓名</text>
-          <text>张三</text>
+          <text>{{ accountInfo.name }}</text>
         </view>
         <view class="account-info-item">
           <text>编号</text>
-          <text>332846284</text>
+          <text>{{ accountInfo.stuNum }}</text>
         </view>
         <view class="account-info-item">
-          <text>学习</text>
+          <text>学校</text>
           <text>桂林电子科技大学</text>
         </view>
         <view class="account-info-item">
@@ -38,22 +38,55 @@
         </view>
         <view class="account-info-item">
           <text>手机号码</text>
-          <text>13476628916</text>
+          <text>{{ accountInfo.mobile }}</text>
         </view>
 
         <view class="account-info-item">
           <text>宿舍</text>
-          <text>Y30303</text>
+          <text>{{ accountInfo.dorm || '暂无' }}</text>
         </view>
       </view>
     </view>
   </view>
 </template>
 <script lang="ts" setup>
-onLoad((option: AnyObject | undefined) => {
-  const data = option as { name: string; studentId: string }
-  console.log(data.name)
+import { getToken } from '@/utils'
+
+const accountInfo = reactive({
+  account: '',
+  name: '',
+  stuNum: '',
+  school: '',
+  mobile: '',
+  role: '',
+  dorm: '',
+  id: '',
 })
+
+onLoad(async (option: AnyObject | undefined) => {
+  const data = option as StuItem
+  accountInfo.name = data.name
+  accountInfo.account = data.name
+  accountInfo.stuNum = data.stuNum
+  accountInfo.id = data.id
+  await handleFetchStu()
+})
+
+const handleFetchStu = async () => {
+  await uni
+    .request({
+      url: `http://106.52.223.188:8760/api/campus/stu/${accountInfo.id}`,
+      method: 'GET',
+      header: { Authorization: getToken() },
+    })
+    .then((res: any) => {
+      accountInfo.mobile = res.data.data.mobile
+      accountInfo.dorm = res.data.data.dormitory?.roomNumber
+    })
+    .catch((err: any) => {
+      console.log(err)
+    })
+}
 </script>
 <style lang="scss" scoped>
 $avatarSize: 25vw;

@@ -105,7 +105,6 @@ const handleRegister = async () => {
       data: JSON.stringify(registerFormValues),
     })
     .then((res: any) => {
-      console.log(res.data)
       if (res.data.code !== 0) {
         registerToastRef.value.show({
           type: 'error',
